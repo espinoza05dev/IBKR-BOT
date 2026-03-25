@@ -1,0 +1,43 @@
+# ── Core IB ───────────────────────────────────────────────────────────────────
+ibapi>=9.81.1
+
+# ── Datos y analisis ──────────────────────────────────────────────────────────
+pandas>=2.0
+numpy>=1.24
+ta>=0.10
+pytz>=2024
+
+# ── RL / IA ───────────────────────────────────────────────────────────────────
+stable-baselines3[extra]>=2.3
+gymnasium>=0.29
+torch>=2.0
+tensorboard>=2.14
+
+# ── KnowledgeBase ─────────────────────────────────────────────────────────────
+# Vector store
+chromadb>=0.5
+sentence-transformers>=3.0
+
+# Texto / documentos
+pdfplumber>=0.10
+PyPDF2>=3.0
+python-docx>=1.1
+ebooklib>=0.18
+beautifulsoup4>=4.12
+requests>=2.31
+lxml>=5.0
+
+# Audio
+openai-whisper>=20231117
+
+# Video
+yt-dlp>=2024.0
+opencv-python>=4.9
+
+# Imagen / OCR
+Pillow>=10.0
+pytesseract>=0.3
+transformers>=4.40    # Para BLIP vision (opcional)
+
+# ── Utilidades ────────────────────────────────────────────────────────────────
+tqdm>=4.66
