@@ -229,9 +229,9 @@ class Bot:
     Inicializa y conecta todos los componentes del sistema.
     """
 
-    HOST      = "127.0.0.1"
+    HOST = "127.0.0.1"
     PORT = 7496
-    PAPER_PORT      = 7497
+    PAPER_PORT = 7497
     CLIENT_ID = 1
 
     def __init__(self):
