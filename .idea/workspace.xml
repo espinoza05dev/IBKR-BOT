@@ -4,7 +4,38 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96faf10a-d2b9-4e2a-b874-9fe6a8b78abb" name="Changes" comment="FEATURE- el inicializador (tengo comentado el codigo original al principio por si acaso algun error)" />
+    <list default="true" id="96faf10a-d2b9-4e2a-b874-9fe6a8b78abb" name="Changes" comment="FIX - arreglo de bug al momento de que procese el texto">
+      <change afterPath="$PROJECT_DIR$/Data/historical/Datadownloader.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/historical/Datapipeline.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/historical/Train model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Data/historical/download_data.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IA/KnowledgeBase/Processors/TextProcessor.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IA/KnowledgeBase/Processors/Videoprocessor.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IA/KnowledgeBase/VectorStore.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IA/KnowledgeBase/content/Common Stocks and Uncommon Profits - Philip A. Fisher.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IA/KnowledgeBase/content/Crearvaloroestrategiasenfocadasalvalor.J.A.TORRENTS.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IA/KnowledgeBase/content/Ebook Streaming Trading.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IA/KnowledgeBase/content/Edwin_LeFevre_Reminiscences_of_a_Stock_Operator.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IA/KnowledgeBase/content/Estrategia _Rsi_Ema_Volumen(trading Profesional).pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IA/KnowledgeBase/content/Estrategias Avanzadas para la proteccion y creacion de valor- Gerardo Verdugo.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IA/KnowledgeBase/content/Market Wizards (Jack D. Schwager) (z-library.sk, 1lib.sk, z-lib.sk).epub" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IA/KnowledgeBase/content/Plan Profesional De Trading E Inversión (ibkr).pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IA/KnowledgeBase/content/Profitable Moving Average Trading System How to Master Trading Zones Using 3 Exponential Moving Averages (Miller, Stephan) (z-library.sk, 1lib.sk, z-lib.sk).pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IA/KnowledgeBase/content/The_Intelligent_Investor.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IA/KnowledgeBase/content/Un-paso-por-delante-de-Wall-Street.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IA/KnowledgeBase/content/_the-complete-turtletrader-how-23-novice-investors-became-overnight-millionaires.epub" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IA/KnowledgeBase/content/a-random-walk-down-wall-street.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IA/ModelTrainer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IA/RiskManager.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IA/TradingAI.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IA/TradingEnvironment.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AI/FeatureEngineering.py" beforeDir="false" afterPath="$PROJECT_DIR$/IA/FeatureEngineering.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AI/KnowledgeBase/KnowledgeIngestor.py" beforeDir="false" afterPath="$PROJECT_DIR$/IA/KnowledgeBase/KnowledgeIngestor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AI/KnowledgeBase/Processors/AudioProcessor.py" beforeDir="false" afterPath="$PROJECT_DIR$/IA/KnowledgeBase/Processors/AudioProcessor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AI/KnowledgeBase/Processors/Imageprocessor.py" beforeDir="false" afterPath="$PROJECT_DIR$/IA/KnowledgeBase/Processors/Imageprocessor.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -20,6 +51,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "espinoza05dev"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/espinoza05dev/IBKR-BOT.git",
+    "accountId": "87a1d0a9-480a-4302-a8df-3cd9dddf4809"
+  }
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -29,20 +72,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.IBKR Bot.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;FEATURE-abstracting__code&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.IBKR Bot.executor": "Run",
+    "Python.KnowledgeIngestor.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "FEATURE-abstracting__code",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/artur/Programming/PycharmProjects/python_autotrader/content",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\artur\Programming\PycharmProjects\python_autotrader\content" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\artur\Programming\PycharmProjects\python_autotrader\AI\KnowledgeBase" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -63,6 +116,7 @@
       <workItem from="1774212282493" duration="4391000" />
       <workItem from="1774228247201" duration="1294000" />
       <workItem from="1774295522301" duration="7248000" />
+      <workItem from="1774460774170" duration="4228000" />
     </task>
     <task id="LOCAL-00001" summary="FEATURE- maneja la conexion, registra callbacks par nuevos eventos,datos (historicos , en tiempo real), maneja las ordenes, y los errores que se puedan producir">
       <option name="closed" value="true" />
@@ -104,7 +158,55 @@
       <option name="project" value="LOCAL" />
       <updated>1774411149803</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="FIX- arreglo de puerto oficial y puerto papel">
+      <option name="closed" value="true" />
+      <created>1774411500409</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1774411500409</updated>
+    </task>
+    <task id="LOCAL-00007" summary="FEATURE- procesa el audio de videos o y simples audios mp3">
+      <option name="closed" value="true" />
+      <created>1774464867317</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1774464867317</updated>
+    </task>
+    <task id="LOCAL-00008" summary="FEATURE- genera los features devuelve las estrategias para que sea consumidos por la IA">
+      <option name="closed" value="true" />
+      <created>1774464948369</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1774464948369</updated>
+    </task>
+    <task id="LOCAL-00009" summary="incializador">
+      <option name="closed" value="true" />
+      <created>1774464961751</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1774464961751</updated>
+    </task>
+    <task id="LOCAL-00010" summary="FEATURE- procesa las imagenes dadas sobre le trading">
+      <option name="closed" value="true" />
+      <created>1774464993159</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1774464993159</updated>
+    </task>
+    <task id="LOCAL-00011" summary="FIX - arreglo de bug al momento de que procese el texto">
+      <option name="closed" value="true" />
+      <created>1774465031255</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1774465031255</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -116,9 +218,16 @@
     <MESSAGE value="FEATURE- recibe en tiempo real los datos del mercado actual de IBKR" />
     <MESSAGE value="FEATURE- estrategias hechas (despues utilizara IA para usarlas o implementar nuevas/mejores)" />
     <MESSAGE value="FEATURE- el inicializador (tengo comentado el codigo original al principio por si acaso algun error)" />
-    <option name="LAST_COMMIT_MESSAGE" value="FEATURE- el inicializador (tengo comentado el codigo original al principio por si acaso algun error)" />
+    <MESSAGE value="FIX- arreglo de puerto oficial y puerto papel" />
+    <MESSAGE value="FEATURE- procesa el audio de videos o y simples audios mp3" />
+    <MESSAGE value="FEATURE- genera los features devuelve las estrategias para que sea consumidos por la IA" />
+    <MESSAGE value="incializador" />
+    <MESSAGE value="FEATURE- procesa las imagenes dadas sobre le trading" />
+    <MESSAGE value="FIX - arreglo de bug al momento de que procese el texto" />
+    <option name="LAST_COMMIT_MESSAGE" value="FIX - arreglo de bug al momento de que procese el texto" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/python_autotrader$IBKR_Bot.coverage" NAME="IBKR Bot Coverage Results" MODIFIED="1774297711867" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python_autotrader$KnowledgeIngestor.coverage" NAME="KnowledgeIngestor Coverage Results" MODIFIED="1774462555650" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AI/KnowledgeBase" />
+    <SUITE FILE_PATH="coverage/python_autotrader$IBKR_Bot.coverage" NAME="IBKR Bot Coverage Results" MODIFIED="1774412305761" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
