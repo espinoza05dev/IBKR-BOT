@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96faf10a-d2b9-4e2a-b874-9fe6a8b78abb" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/IBKR Bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/IBKR Bot.py" afterDir="false" />
-    </list>
+    <list default="true" id="96faf10a-d2b9-4e2a-b874-9fe6a8b78abb" name="Changes" comment="FEATURE- el inicializador (tengo comentado el codigo original al principio por si acaso algun error)" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -31,20 +29,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.IBKR Bot.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "FEATURE-abstracting__code",
-    "ignore.virus.scanning.warn.message": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.IBKR Bot.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;FEATURE-abstracting__code&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -66,10 +64,59 @@
       <workItem from="1774228247201" duration="1294000" />
       <workItem from="1774295522301" duration="7248000" />
     </task>
+    <task id="LOCAL-00001" summary="FEATURE- maneja la conexion, registra callbacks par nuevos eventos,datos (historicos , en tiempo real), maneja las ordenes, y los errores que se puedan producir">
+      <option name="closed" value="true" />
+      <created>1774410965537</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1774410965537</updated>
+    </task>
+    <task id="LOCAL-00002" summary="FEATURE- gestiona la creacion y envio de ordenes a IBKR">
+      <option name="closed" value="true" />
+      <created>1774411006200</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1774411006200</updated>
+    </task>
+    <task id="LOCAL-00003" summary="FEATURE- recibe en tiempo real los datos del mercado actual de IBKR">
+      <option name="closed" value="true" />
+      <created>1774411050041</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1774411050041</updated>
+    </task>
+    <task id="LOCAL-00004" summary="FEATURE- estrategias hechas (despues utilizara IA para usarlas o implementar nuevas/mejores)">
+      <option name="closed" value="true" />
+      <created>1774411097433</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1774411097433</updated>
+    </task>
+    <task id="LOCAL-00005" summary="FEATURE- el inicializador (tengo comentado el codigo original al principio por si acaso algun error)">
+      <option name="closed" value="true" />
+      <created>1774411149803</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1774411149803</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="FEATURE- maneja la conexion, registra callbacks par nuevos eventos,datos (historicos , en tiempo real), maneja las ordenes, y los errores que se puedan producir" />
+    <MESSAGE value="FEATURE- gestiona la creacion y envio de ordenes a IBKR" />
+    <MESSAGE value="FEATURE- recibe en tiempo real los datos del mercado actual de IBKR" />
+    <MESSAGE value="FEATURE- estrategias hechas (despues utilizara IA para usarlas o implementar nuevas/mejores)" />
+    <MESSAGE value="FEATURE- el inicializador (tengo comentado el codigo original al principio por si acaso algun error)" />
+    <option name="LAST_COMMIT_MESSAGE" value="FEATURE- el inicializador (tengo comentado el codigo original al principio por si acaso algun error)" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/python_autotrader$IBKR_Bot.coverage" NAME="IBKR Bot Coverage Results" MODIFIED="1774297711867" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

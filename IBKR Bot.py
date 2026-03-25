@@ -230,8 +230,8 @@ class Bot:
     """
 
     HOST      = "127.0.0.1"
-    PAPER_PORT = 7496
-    PORT      = 7497
+    PORT = 7496
+    PAPER_PORT      = 7497
     CLIENT_ID = 1
 
     def __init__(self):
