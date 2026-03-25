@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-
 import ibapi
 from ibapi.client import EClient
 from ibapi.common import BarData
@@ -22,13 +21,13 @@ class IBApi(EWrapper,EClient):
         EClient.__init__(self,self)
     def historicalData(self, reqId, bar):
         try:
-            bot.on_bar_update(reqId, bar)
+            bot.on_bar_update(reqId, bar,True)
         except Exception as e:
             print(e)
     #On realtime Bar after historical data finishes
     def historicalDataUpate(self,reqId, bar):
         try:
-            bot.on_bar_update(reqId, bar)
+            bot.on_bar_update(reqId, bar,True)
         except Exception as e:
             print(e)
     # On historical Data End
@@ -70,7 +69,7 @@ class Bar:
 #Bot Logic
 class Bot():
     ib = None
-    barsize = Bar()
+    barsize = 1
     currentBar = Bar
     bars = []
     reqId = 0
@@ -81,19 +80,24 @@ class Bot():
     def __init__(self):
         #Connect to IB on init
         self.ib = IBApi()
-        self.ib.connect("127.0.0.1", 7496,1)
+        self.ib.connect("127.0.0.1", 7497,1)
         ib_thread = threading.Thread(target=self.run_loop, daemon=True)
         ib_thread.start()
+
         time.sleep(1)
-        currentBar = Bar()
+        currentBar = Bar
+
         #Get the symbol
         self.symbol = input("Ingrese el simbolo en el que quieres invertir: ")
         #get the bar size
-        self.barsize = input("enter the barsize you watn to trade in minutes: ")
-        mintext = " min"
+        self.barsize = input("enter the barsize you want to trade in minutes: ")
+
         if (int(self.barsize) > 1):
             mintext = " mins"
+        else:
+            mintext = " min"
         queryTime = (datetime.now().astimezone(pytz.timezone("America/New_York"))-timedelta(days=1)).replace(hour=16, minute=0, second=0, microsecond=0).strftime("%Y%m%d %H:%M:%S")
+
         #Create our IB contrart Object
         contract = Contract()
         contract.symbol = self.symbol.upper()
@@ -104,6 +108,7 @@ class Bot():
         #request market data
         #self.ib.reqRealTimeBars(1,contract,5,"TRADES",1,[])
         self.ib.reqHistoricalData(self.reqId,contract,"","2 D",str(self.barsize)+mintext,"TRADES",1,1,True,[])
+
     #listen to socket i separate thread
     def run_loop(self):
         self.ib.run()
@@ -115,6 +120,7 @@ class Bot():
         contract.secType = "STK"
         contract.exchange = "SMART"
         contract.currency = "USD"
+
         #Create Parent Order / Initial entry
         parent = Order()
         parent.orderId = parentOrderId
@@ -122,6 +128,7 @@ class Bot():
         parent.action = action
         parent.quantity = quantity
         parent.transmit = False
+
         #Profit Target
         profitTargetOrder = Order()
         profitTargetOrder.orderId = parent.orderId + 1
@@ -130,6 +137,7 @@ class Bot():
         profitTargetOrder.totalQuantity = quantity
         profitTargetOrder.lmtPrice = round(profitTarget,2)
         profitTargetOrder.transmit = False
+
         #Stop Loss
         stopLossOrder = Order()
         stopLossOrder.orderId = parent.orderId + 2
@@ -144,6 +152,7 @@ class Bot():
 
     #pass reatime bar data back to our bot object
     def on_bar_update(self, reqId, bar,realtime):
+
         #historical data to catch up
         if(realtime == False):
             self.bars.append(bar)
@@ -194,6 +203,7 @@ class Bot():
                     print("New bar!")
                     self.bars.append(self.currentBar)
                 self.currentBar.open = bar.open
+
         #Build reatime bar
         if(self.currentBar.open == 0):
             self.currentBar.open = bar.open
