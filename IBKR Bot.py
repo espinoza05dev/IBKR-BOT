@@ -217,7 +217,7 @@ import time
 
 from ibapi.contract import Contract
 
-from core.BrokerConecction import IBApi
+from core.BrockerConnection import IBApi
 from core.Portfolio import Portfolio
 from core.Strategy import SMAStrategy
 from Data.RealTime_Market_Data import MarketDataHandler
@@ -230,6 +230,7 @@ class Bot:
     """
 
     HOST      = "127.0.0.1"
+    PAPER_PORT = 7496
     PORT      = 7497
     CLIENT_ID = 1
 
@@ -244,7 +245,7 @@ class Bot:
             on_bar_update=self._on_bar_update,
             on_next_order_id=self._set_order_id,
         )
-        self.ib.connect(self.HOST, self.PORT, self.CLIENT_ID)
+        self.ib.connect(self.HOST, self.PAPER_PORT, self.CLIENT_ID)
 
         ib_thread = threading.Thread(target=self.ib.run, daemon=True)
         ib_thread.start()
