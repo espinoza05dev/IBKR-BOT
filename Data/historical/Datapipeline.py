@@ -76,9 +76,9 @@ class DataPipeline:
         print(
             f"\n[Pipeline] Split completado:\n"
             f"  Train : {len(train_df):,} velas  "
-            f"({train_df.index[0].date()} → {train_df.index[-1].date()})\n"
+            f"({train_df.index[0]} → {train_df.index[-1]})\n"
             f"  Test  : {len(test_df):,} velas  "
-            f"({test_df.index[0].date()} → {test_df.index[-1].date()})"
+            f"({test_df.index[0]} → {test_df.index[-1]})"
         )
 
         # 5. Guardar splits
