@@ -44,7 +44,7 @@ N_ENVS      = 16        # 0 = auto según hardware
 
 # ── Timesteps ─────────────────────────────────────────────────────────────
 # CPU 500_000  ≈ 40 min   →   GPU 2_000_000  ≈ 15 min  (mismo resultado)
-TIMESTEPS   = 80_000_000  # Recomendado con GPU
+TIMESTEPS   = 1_000_000  # Recomendado con GPU
 # TIMESTEPS = 500_000    # Si usas solo CPU
 
 EVAL_FREQ       = 20_000  # Evaluar cada N pasos
@@ -96,8 +96,8 @@ def modo_a():
 def modo_b():
     """Datos ya descargados en disco."""
     print("\n▶  Modo B — Datos desde disco")
-    train_path = Path(f"Data/historical/{SYMBOL}/{SYMBOL}_{INTERVAL}_train.csv")
-    test_path  = Path(f"Data/historical/{SYMBOL}/{SYMBOL}_{INTERVAL}_test.csv")
+    train_path = Path(f"IA/Data/historical/{SYMBOL}/{SYMBOL}_{INTERVAL}_train.csv")
+    test_path  = Path(f"IA/Data/historical/{SYMBOL}/{SYMBOL}_{INTERVAL}_test.csv")
 
     if train_path.exists():
         train_df       = pd.read_csv(train_path, index_col=0, parse_dates=True)

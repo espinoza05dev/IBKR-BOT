@@ -23,7 +23,7 @@ import torch
 # ── OPTIMIZACIÓN CRÍTICA PARA CPU/GPU ─────────────────────────────────────────
 # Evita que la CPU pelee consigo misma intentando usar todos los hilos
 # en cada entorno. Mantiene la CPU libre para alimentar a la GPU.
-torch.set_num_threads(1)
+torch.set_num_threads(3)
 # ──────────────────────────────────────────────────────────────────────────────
 
 from stable_baselines3 import PPO

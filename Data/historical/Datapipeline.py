@@ -103,7 +103,7 @@ class DataPipeline:
 
     @staticmethod
     def _save_splits(train: pd.DataFrame, test: pd.DataFrame, symbol: str, interval: str):
-        folder = Path("Data/historical") / symbol.upper()
+        folder = Path(f"IA/Data/historical") / symbol.upper()
         folder.mkdir(parents=True, exist_ok=True)
         train.to_csv(folder / f"{symbol.upper()}_{interval}_train.csv")
         test.to_csv(folder  / f"{symbol.upper()}_{interval}_test.csv")

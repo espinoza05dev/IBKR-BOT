@@ -29,7 +29,7 @@ from stable_baselines3.common.vec_env import VecNormalize, DummyVecEnv
 from IA.TradingEnvironment import TradingEnvironment
 from IA.FeatureEngineering import FeatureEngineer
 
-MODELS_DIR = Path("Data/historical/IA/models")
+MODELS_DIR = Path("C:\\Users\\artur\\Programming\\PycharmProjects\\python_autotrader\\IA\\models")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -289,19 +289,29 @@ class BacktestEngine:
 
         # ── 3. Series temporales ──────────────────────────────────────────────
         idx = df_feat["datetime"] if "datetime" in df_feat.columns else pd.RangeIndex(n_bars)
-        idx_trimmed = idx.iloc[:len(equity_values)]
+        idx_trimmed = idx[:len(equity_values)]
 
         equity_series   = pd.Series(equity_values,   index=idx_trimmed, name="equity")
         drawdown_series = pd.Series(drawdown_values,  index=idx_trimmed, name="drawdown")
         actions_series  = pd.Series(action_values,    index=idx_trimmed, name="action")
 
         # Buy & Hold benchmark
-        first_price  = float(df_feat["close"].iloc[window])
-        bh_equity    = (df_feat["close"].iloc[window:].values / first_price) * self.initial_balance
-        benchmark    = pd.Series(
-            list(np.full(window, self.initial_balance)) + list(bh_equity),
-            index=idx_trimmed, name="buy_hold"
+        first_price = float(df_feat["close"].iloc[window])
+        bh_equity = (df_feat["close"].iloc[window:].values / first_price) * self.initial_balance
+
+        # 1. CREAMOS SOLO LA LISTA (Sin pd.Series todavía)
+        benchmark_vals = list(np.full(window, self.initial_balance)) + list(bh_equity)
+
+        # 2. CALCULAMOS EL TAMAÑO CORRECTO
+        min_len = min(len(benchmark_vals), len(idx_trimmed))
+
+        # 3. AHORA SÍ CREAMOS LA SERIE YA RECORTADA
+        benchmark = pd.Series(
+            benchmark_vals[:min_len],
+            index=idx_trimmed[:min_len],
+            name="buy_hold"
         )
+
 
         # ── 4. Resultado ──────────────────────────────────────────────────────
         result = BacktestResult(

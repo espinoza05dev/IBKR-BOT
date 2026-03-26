@@ -21,7 +21,7 @@ from typing import Optional
 import pandas as pd
 import numpy as np
 
-DATA_DIR = Path("Data/historical")
+DATA_DIR = Path(f"IA/Data/historical")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
