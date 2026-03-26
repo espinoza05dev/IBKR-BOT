@@ -461,7 +461,7 @@ class WalkForwardEngine:
 
     def aggregate_metrics(self, results: list[BacktestResult]) -> dict:
         """Agrega métricas de todas las ventanas en un resumen estadístico."""
-        from IA.backtest.BacktestMetrics import BacktestMetrics
+        from IA.backtest.Backtestmetrics import BacktestMetrics
 
         all_metrics = [BacktestMetrics(r).compute() for r in results]
 
@@ -480,7 +480,7 @@ class WalkForwardEngine:
         return {k: agg(k) for k in keys}
 
     def _print_aggregate(self, results: list[BacktestResult]):
-        from IA.backtest.BacktestMetrics import BacktestMetrics
+        from IA.backtest.Backtestmetrics import BacktestMetrics
 
         print(f"\n{'═'*55}")
         print(f"  Walk-Forward — {len(results)} ventanas completadas")

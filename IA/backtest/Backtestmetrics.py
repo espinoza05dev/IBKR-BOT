@@ -17,7 +17,7 @@ import pandas as pd
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from IA.backtest.BacktestEngine import BacktestResult
+    from IA.backtest.Backtestengine import BacktestResult
 
 
 class BacktestMetrics:
