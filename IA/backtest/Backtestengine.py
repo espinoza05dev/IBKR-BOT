@@ -29,7 +29,7 @@ from stable_baselines3.common.vec_env import VecNormalize, DummyVecEnv
 from IA.TradingEnvironment import TradingEnvironment
 from IA.FeatureEngineering import FeatureEngineer
 
-MODELS_DIR = Path("IA/models")
+MODELS_DIR = Path("Data/historical/IA/models")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
