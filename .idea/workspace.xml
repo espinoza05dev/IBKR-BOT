@@ -4,16 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96faf10a-d2b9-4e2a-b874-9fe6a8b78abb" name="Changes" comment="...">
-      <change afterPath="$PROJECT_DIR$/IA/gpu_check.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/historical/Datapipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data/historical/Datapipeline.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/historical/Train model.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data/historical/Train model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/historical/download_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data/historical/download_data.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IA/ModelTrainer.py" beforeDir="false" afterPath="$PROJECT_DIR$/IA/ModelTrainer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IA/TradingEnvironment.py" beforeDir="false" afterPath="$PROJECT_DIR$/IA/TradingEnvironment.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-    </list>
+    <list default="true" id="96faf10a-d2b9-4e2a-b874-9fe6a8b78abb" name="Changes" comment="..." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -106,7 +97,7 @@
       <workItem from="1774460774170" duration="4671000" />
       <workItem from="1774533979083" duration="1055000" />
       <workItem from="1774552302978" duration="406000" />
-      <workItem from="1774552737096" duration="1146000" />
+      <workItem from="1774552737096" duration="1473000" />
     </task>
     <task id="LOCAL-00001" summary="FEATURE- maneja la conexion, registra callbacks par nuevos eventos,datos (historicos , en tiempo real), maneja las ordenes, y los errores que se puedan producir">
       <option name="closed" value="true" />
@@ -212,7 +203,15 @@
       <option name="project" value="LOCAL" />
       <updated>1774466405710</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="...">
+      <option name="closed" value="true" />
+      <created>1774554430585</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1774554430585</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
