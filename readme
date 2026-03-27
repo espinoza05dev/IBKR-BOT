@@ -19,3 +19,5 @@
 (opcional) 6- ejecuta [---gpu_check---], revisa si se esta usando la CPU O GPU, al momento de
               hacer el entrenamiento con [---Train model---]
 ----------------------------------------------------------------------------------------
+
+extension_6- preferible tener grafica 30s.. o 40s.., en caso de no tener esos modelos, disminuir version de torch
