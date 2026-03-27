@@ -10,12 +10,10 @@ from __future__ import annotations
 import threading
 from pathlib import Path
 from typing import Optional
-
 import numpy as np
 import pandas as pd
 from stable_baselines3 import PPO
 from stable_baselines3.common.vec_env import DummyVecEnv, VecNormalize
-
 from IA.FeatureEngineering import FeatureEngineer
 from IA.RiskManager import RiskManager, RiskConfig
 from IA.TradingEnvironment import TradingEnvironment

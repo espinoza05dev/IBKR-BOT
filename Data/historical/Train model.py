@@ -14,9 +14,7 @@ Ejecución:
 
 import sys
 from pathlib import Path
-
 import pandas as pd
-
 from Data.historical.Datadownloader import DataManager
 from Data.historical.Datapipeline   import DataPipeline
 from IA.ModelTrainer import ModelTrainer, PPOConfig
@@ -26,9 +24,9 @@ from IA.ModelTrainer import ModelTrainer, PPOConfig
 # ║              CONFIGURACIÓN — edita solo aquí              ║
 # ╚═══════════════════════════════════════════════════════════╝
 
-SYMBOL      = "PG"       # Símbolo a entrenar
+SYMBOL      = "PYPL"       # Símbolo a entrenar
 INTERVAL    = "1h"         # Timeframe: "1m" "5m" "15m" "1h" "1d"
-START       = "2012-01-01" # Inicio del histórico
+START       = "2010-01-01" # Inicio del histórico
 SOURCE      = "yfinance"   # "yfinance" | "ibkr" | "av"
 
 # ── GPU / paralelismo ──────────────────────────────────────────────────────
@@ -44,7 +42,7 @@ N_ENVS      = 16        # 0 = auto según hardware
 
 # ── Timesteps ─────────────────────────────────────────────────────────────
 # CPU 500_000  ≈ 40 min   →   GPU 2_000_000  ≈ 15 min  (mismo resultado)
-TIMESTEPS   = 10_000_000
+TIMESTEPS   = 70_000_000
 # TIMESTEPS = 500_000    # Si usas solo CPU
 
 EVAL_FREQ       = 20_000  # Evaluar cada N pasos
@@ -66,7 +64,7 @@ CUSTOM_CONFIG = PPOConfig(
 
 # Optuna (solo Modo D)
 OPTUNA_TRIALS      = 20
-OPTUNA_STEPS_TRIAL = 200_000
+OPTUNA_STEPS_TRIAL = 500_000
 
 
 # ══════════════════════════════════════════════════════════════════════════════

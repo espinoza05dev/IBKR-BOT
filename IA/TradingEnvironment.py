@@ -176,7 +176,7 @@ class TradingEnvironment(gym.Env):
     metadata = {"render_modes": ["human"]}
 
     # Parámetros de riesgo
-    INITIAL_BALANCE = 10.0
+    INITIAL_BALANCE = 10000.0
     TRANSACTION_COST = 0.001  # 0.1% por operación
     MAX_DRAWDOWN_LIMIT = 0.15  # -15% antes de terminar el episodio
     REWARD_SCALE = 100.0
