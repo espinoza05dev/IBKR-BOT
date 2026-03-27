@@ -444,7 +444,7 @@
 /IA/models/TTWO/best_model.zip
 /IA/models/TTWO/metrics.json
 /IA/models/TTWO/vec_normalize.pkl
-/IA/IA/backtest/reports/backtest_CAT_20260326_153337.html
+/IA/IA_BackTests/backtest/reports/backtest_CAT_20260326_153337.html
 /.idea/shelf/Uncommitted_changes_before_Merge_at_25_03_2026_1_40_pm_[Changes]/shelved.patch
 /IA/Data/historical/A/A_1h.csv
 /IA/Data/historical/A/A_1h_test.csv
