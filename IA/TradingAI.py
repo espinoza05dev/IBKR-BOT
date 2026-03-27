@@ -20,7 +20,7 @@ from IA.FeatureEngineering import FeatureEngineer
 from IA.RiskManager import RiskManager, RiskConfig
 from IA.TradingEnvironment import TradingEnvironment
 
-MODELS_DIR = Path("IA/models")
+MODELS_DIR = Path(f"C:\\Users\\artur\\Programming\\PycharmProjects\\python_autotrader\\IA\\models")
 
 
 class TradingAI:

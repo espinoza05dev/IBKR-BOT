@@ -232,6 +232,7 @@ Uso:
         resultados = ki.query("estrategia de ruptura de resistencia")
 """
 
-INFO_TRADING = KnowledgeIngestor()
-
-INFO_TRADING.ingest_folder("content/")
+# ingresar_info = KnowledgeIngestor()
+# ingresar_info.ingest_folder("content/")
+# ingresar_info.ingest("https://www.tiktok.com/@forexboss5/photo/7608953317464689923?is_from_webapp=1&sender_device=pc&web_id=7621703936957384212")
+# ingresar_info.ingest_text("",source="nota_manual")

@@ -1,94 +1,138 @@
+"""
+Portfolio.py
+Gestiona la creación y envío de órdenes a Interactive Brokers.
+Soporte completo para bracket orders, market orders y fills.
+"""
+
+from __future__ import annotations
+
+from typing import Optional, Callable
+
 from ibapi.contract import Contract
-from ibapi.order import Order
+from ibapi.order    import Order
 
 
 class Portfolio:
     """
-    Gestiona la creación y el envío de órdenes a Interactive Brokers.
+    Gestiona órdenes hacia IBKR.
+
+    Tipos de orden soportados:
+        place_bracket_order()  → BUY + Take Profit + Stop Loss (3 órdenes OCA)
+        place_market_order()   → Market order simple (SELL para cerrar)
     """
 
     def __init__(self, ib, symbol: str):
-        self.ib = ib
+        self.ib     = ib
         self.symbol = symbol.upper()
+        self._fill_cb: Optional[Callable] = None
 
-    # ── Contrato ──────────────────────────────────────────────────────────────
+    def set_fill_callback(self, callback: Callable):
+        """
+        Registra un callback para cuando IBKR confirme un fill.
+        El callback recibe (fill_price, action, quantity).
+        """
+        self._fill_cb = callback
 
-    def _create_contract(self) -> Contract:
-        contract = Contract()
-        contract.symbol = self.symbol
-        contract.secType = "STK"
-        contract.exchange = "SMART"
-        contract.currency = "USD"
-        return contract
+    # ── Contratos ─────────────────────────────────────────────────────────────
 
-    # ── Construcción de bracket order ────────────────────────────────────────
+    def _contract(self) -> Contract:
+        c          = Contract()
+        c.symbol   = self.symbol
+        c.secType  = "STK"
+        c.exchange = "SMART"
+        c.currency = "USD"
+        return c
+
+    # ── Bracket Order ─────────────────────────────────────────────────────────
 
     def build_bracket_order(
         self,
         parent_order_id: int,
-        action: str,
-        quantity: int,
-        profit_target: float,
-        stop_loss: float,
+        action:          str,
+        quantity:        int,
+        profit_target:   float,
+        stop_loss:       float,
     ) -> list[Order]:
         """
-        Construye las tres órdenes que forman un bracket:
-            1. Orden de entrada (MKT)
+        Construye las 3 órdenes de un bracket:
+            1. Entrada (MKT)
             2. Take Profit (LMT)
             3. Stop Loss (STP)
+        Las 3 van en el mismo OCA group.
         """
         # Entrada
-        parent = Order()
-        parent.orderId = parent_order_id
-        parent.orderType = "MKT"
-        parent.action = action              # "BUY" / "SELL"
-        parent.totalQuantity = quantity
-        parent.transmit = False
+        parent                = Order()
+        parent.orderId        = parent_order_id
+        parent.orderType      = "MKT"
+        parent.action         = action
+        parent.totalQuantity  = quantity
+        parent.transmit       = False
 
         # Take Profit
-        take_profit = Order()
-        take_profit.orderId = parent_order_id + 1
-        take_profit.orderType = "LMT"
-        take_profit.action = "SELL"
-        take_profit.totalQuantity = quantity
-        take_profit.lmtPrice = round(profit_target, 2)
-        take_profit.parentId = parent_order_id
-        take_profit.transmit = False
+        tp                    = Order()
+        tp.orderId            = parent_order_id + 1
+        tp.orderType          = "LMT"
+        tp.action             = "SELL" if action == "BUY" else "BUY"
+        tp.totalQuantity      = quantity
+        tp.lmtPrice           = round(profit_target, 2)
+        tp.parentId           = parent_order_id
+        tp.transmit           = False
 
         # Stop Loss
-        stop = Order()
-        stop.orderId = parent_order_id + 2
-        stop.orderType = "STP"
-        stop.action = "SELL"
-        stop.totalQuantity = quantity
-        stop.auxPrice = round(stop_loss, 2)
-        stop.parentId = parent_order_id
-        stop.transmit = True               # Transmite las 3 juntas
+        sl                    = Order()
+        sl.orderId            = parent_order_id + 2
+        sl.orderType          = "STP"
+        sl.action             = "SELL" if action == "BUY" else "BUY"
+        sl.totalQuantity      = quantity
+        sl.auxPrice           = round(stop_loss, 2)
+        sl.parentId           = parent_order_id
+        sl.transmit           = True   # Transmite las 3 juntas
 
-        return [parent, take_profit, stop]
-
-    # ── Envío ─────────────────────────────────────────────────────────────────
+        return [parent, tp, sl]
 
     def place_bracket_order(
         self,
-        order_id: int,
-        action: str,
-        quantity: int,
+        order_id:      int,
+        action:        str,
+        quantity:      int,
         profit_target: float,
-        stop_loss: float,
+        stop_loss:     float,
     ) -> int:
         """
-        Construye y envía el bracket order.
+        Construye y envía el bracket order a IBKR.
         Retorna el próximo order_id disponible (order_id + 3).
         """
-        orders = self.build_bracket_order(order_id, action, quantity, profit_target, stop_loss)
-        contract = self._create_contract()
-        oca_group = f"OCA_{order_id}"
+        orders   = self.build_bracket_order(order_id, action, quantity, profit_target, stop_loss)
+        contract = self._contract()
+        oca_grp  = f"OCA_{order_id}"
 
-        for order in orders:
-            order.ocaGroup = oca_group
-            order.ocaType = 2
-            self.ib.placeOrder(order.orderId, contract, order)
-            print(f"[Portfolio] Orden enviada — ID={order.orderId} | Tipo={order.orderType} | Acción={order.action}")
+        for o in orders:
+            o.ocaGroup = oca_grp
+            o.ocaType  = 2
+            self.ib.placeOrder(o.orderId, contract, o)
+            print(
+                f"[Portfolio] Orden enviada  "
+                f"ID={o.orderId}  {o.orderType}  {o.action}  qty={o.totalQuantity}"
+            )
 
         return order_id + 3
+
+    # ── Market Order simple ───────────────────────────────────────────────────
+
+    def place_market_order(
+        self,
+        order_id: int,
+        action:   str,
+        quantity: int,
+    ) -> int:
+        """Orden de mercado simple. Usada para cerrar posiciones."""
+        o                 = Order()
+        o.orderId         = order_id
+        o.orderType       = "MKT"
+        o.action          = action
+        o.totalQuantity   = quantity
+        o.transmit        = True
+
+        self.ib.placeOrder(order_id, self._contract(), o)
+        print(f"[Portfolio] MKT {action} × {quantity}  ID={order_id}")
+        return order_id + 1

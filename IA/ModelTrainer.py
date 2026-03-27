@@ -23,7 +23,7 @@ import torch
 # ── OPTIMIZACIÓN CRÍTICA PARA CPU/GPU ─────────────────────────────────────────
 # Evita que la CPU pelee consigo misma intentando usar todos los hilos
 # en cada entorno. Mantiene la CPU libre para alimentar a la GPU.
-torch.set_num_threads(3)
+torch.set_num_threads(4)
 # ──────────────────────────────────────────────────────────────────────────────
 
 from stable_baselines3 import PPO
@@ -46,8 +46,8 @@ from IA.TradingEnvironment import TradingEnvironment
 from IA.FeatureEngineering import FeatureEngineer
 
 
-MODELS_DIR = Path("IA/models")
-LOGS_DIR   = Path("IA/logs")
+MODELS_DIR = Path(f"C:\\Users\\artur\\Programming\\PycharmProjects\\python_autotrader\\IA\\models")
+LOGS_DIR   = Path("C:\\Users\\artur\\Programming\\PycharmProjects\\python_autotrader\\IA\\logs")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
