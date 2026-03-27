@@ -18,9 +18,9 @@ import pandas as pd
 
 from Data.historical.Datadownloader import DataManager
 from Data.historical.Datapipeline   import DataPipeline
-from IA.backtest.Backtestengine     import BacktestEngine, WalkForwardEngine
-from IA.backtest.Backtestmetrics    import BacktestMetrics
-from IA.backtest.Backtestreport     import BacktestReport
+from backtest.Backtestengine     import BacktestEngine, WalkForwardEngine
+from backtest.Backtestmetrics    import BacktestMetrics
+from backtest.Backtestreport     import BacktestReport
 
 
 # ╔════════════════════════════════════════════════════════╗
@@ -297,7 +297,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
     print("\n╔═══════════════════════════════════════════════╗")
-    print("║       Backtester — AutoTrader IA              ║")
+    print("║       Backtester — AutoTrader IA_BackTests              ║")
     print("╚═══════════════════════════════════════════════╝")
     print(f"  Símbolo : {SYMBOL}  |  Intervalo: {INTERVAL}")
     print(f"  Test    : {START_TEST} → {END_TEST or 'hoy'}")

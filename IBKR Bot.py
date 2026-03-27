@@ -3,10 +3,9 @@ from __future__ import annotations
 IBKR Bot.py - Punto de entrada del autotrader.
 Orquesta la conexion, datos de mercado, estrategia y portfolio.
 """
-
 """
 IBKR Bot.py
-Punto de entrada del autotrader con IA integrada.
+Punto de entrada del autotrader con IA_BackTests integrada.
 Soporta Paper Trading (simulado) y Live Trading (dinero real).
 
 Flujo completo:
@@ -46,7 +45,7 @@ from IA.Papertradingmonitor import PaperTradingMonitor
 #  CONFIGURACIÓN — edita solo esta sección
 # ══════════════════════════════════════════════════════════════════════════════
 
-SYMBOL       = "PG"    # Símbolo a operar, la IA debe de haber sido entrenada con el simbolo antes de ejecutal el BOT
+SYMBOL       = "PG"    # Símbolo a operar, la IA_BackTests debe de haber sido entrenada con el simbolo antes de ejecutal el BOT
 INTERVAL_MIN = 60        # Tamaño de vela en minutos (ej: 60 = velas de 1h)
 INITIAL_CASH = 10_000.0  # Capital inicial (informativo para el monitor)
 
@@ -58,7 +57,7 @@ TWS_PORT   = 7497        # Paper: 7497 (TWS) / 4002 (Gateway)
                          # Live:  7496 (TWS) / 4001 (Gateway)
 CLIENT_ID  = 1           # ID único de cliente (cambia si hay varias conexiones)
 
-# ── IA / Riesgo ───────────────────────────────────────────────────────────────
+# ── IA_BackTests / Riesgo ───────────────────────────────────────────────────────────────
 WARMUP_BARS          = 80    # Barras históricas antes de operar
 CONFIDENCE_THRESHOLD = 0.60  # Confianza mínima del modelo para actuar
 
@@ -72,12 +71,12 @@ RISK = RiskConfig(
 )
 
 # ── Datos históricos (warmup) ─────────────────────────────────────────────────
-HISTORY_DURATION = "5 D"  # Cuánto historial pedir para calentar la IA
+HISTORY_DURATION = "5 D"  # Cuánto historial pedir para calentar la IA_BackTests
                            # "1 D" | "5 D" | "1 M" | "6 M" | "1 Y"
 # ══════════════════════════════════════════════════════════════════════════════
 class AITradingBot:
     """
-    Bot de trading con IA integrada.
+    Bot de trading con IA_BackTests integrada.
 
     Componentes:
         IBApi              → Conexión con TWS/Gateway
@@ -95,7 +94,7 @@ class AITradingBot:
 
         mode_str = "📄 PAPER TRADING" if PAPER_MODE else "💰 LIVE TRADING"
         print(f"\n{'═'*55}")
-        print(f"  AutoTrader IA  |  {mode_str}")
+        print(f"  AutoTrader IA_BackTests  |  {mode_str}")
         print(f"  Símbolo: {SYMBOL}  |  Velas: {INTERVAL_MIN} min")
         print(f"  Host: {TWS_HOST}:{TWS_PORT}  |  ClientID: {CLIENT_ID}")
         print(f"{'═'*55}\n")
@@ -140,7 +139,7 @@ class AITradingBot:
         self.portfolio.set_fill_callback(self.monitor.on_fill)   # Notificar fills
 
         # ── 5. TradingAI ──────────────────────────────────────────────────────
-        print(f"[Bot] Cargando modelo IA para {SYMBOL}...")
+        print(f"[Bot] Cargando modelo IA_BackTests para {SYMBOL}...")
         self.ai = TradingAI(
             symbol               = SYMBOL,
             risk_config          = RISK,
@@ -148,12 +147,12 @@ class AITradingBot:
         )
         self.ai.load()
         self.ai.set_order_callback(self._execute_ai_order)
-        print(f"[Bot] ✓ Modelo IA cargado")
+        print(f"[Bot] ✓ Modelo IA_BackTests cargado")
 
-        # ── 6. MarketDataHandler (envuelve barras IB y alimenta a la IA) ──────
+        # ── 6. MarketDataHandler (envuelve barras IB y alimenta a la IA_BackTests) ──────
         self.market_data = MarketDataHandler(
             barsize  = INTERVAL_MIN,
-            strategy = None,      # Sin SMAStrategy — la IA toma las decisiones
+            strategy = None,      # Sin SMAStrategy — la IA_BackTests toma las decisiones
         )
         self.market_data.set_bar_close_callback(self._on_bar_closed)
 
@@ -206,7 +205,7 @@ class AITradingBot:
     def _on_bar_closed(self, closed_bar: Bar):
         """
         Callback llamado por MarketDataHandler al cierre de cada vela.
-        Aquí la IA toma la decisión.
+        Aquí la IA_BackTests toma la decisión.
         """
         self.ai.on_new_bar(closed_bar)
 
@@ -234,14 +233,14 @@ class AITradingBot:
         stop_loss:    float,
     ):
         """
-        Recibe la orden de la IA y la envía a IBKR via Portfolio.
+        Recibe la orden de la IA_BackTests y la envía a IBKR via Portfolio.
         Este callback es el puente entre TradingAI y Portfolio.
         """
         with self._lock:
             price = self.monitor.current_price
 
             print(
-                f"\n[Bot] ▶ ORDEN IA\n"
+                f"\n[Bot] ▶ ORDEN IA_BackTests\n"
                 f"  Acción       : {action}\n"
                 f"  Cantidad     : {quantity}\n"
                 f"  Precio actual: ${price:.2f}\n"
@@ -337,7 +336,6 @@ class AITradingBot:
 
 if __name__ == "__main__":
     bot = AITradingBot()
-
 
 #--------------------------------------------------------------------BOT FUNCIONAL----------------------------------------------------------------
     # from datetime import datetime, timedelta

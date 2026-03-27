@@ -1,3 +1,4 @@
+from __future__ import annotations
 """
 BacktestEngine.py
 Motor de backtesting que ejecuta el modelo entrenado sobre datos históricos
@@ -13,8 +14,6 @@ Incluye:
     - BacktestEngine   : motor principal (1 run)
     - WalkForwardEngine: validación walk-forward (múltiples ventanas)
 """
-
-from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import datetime

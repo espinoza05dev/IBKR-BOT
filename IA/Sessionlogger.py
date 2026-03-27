@@ -3,11 +3,11 @@ SessionLogger.py
 Registra todo lo que ocurre durante una sesión de trading:
     - Eventos del sistema (conexión, desconexión, errores)
     - Barras recibidas
-    - Decisiones de la IA (acción, confianza)
+    - Decisiones de la IA_BackTests (acción, confianza)
     - Órdenes enviadas y fills recibidos
     - Resumen final de la sesión
 
-Guarda en: IA/logs/sessions/AAPL_paper_20240315_143022.jsonl
+Guarda en: IA_BackTests/logs/sessions/AAPL_paper_20240315_143022.jsonl
 (Un JSON por línea para fácil análisis posterior)
 """
 
@@ -18,7 +18,7 @@ import threading
 from datetime import datetime
 from pathlib import Path
 
-SESSIONS_DIR = Path("IA/LogsSession/sessions")
+SESSIONS_DIR = Path("LogsSession/sessions")
 
 
 class SessionLogger:
@@ -85,7 +85,7 @@ class SessionLogger:
         blocked:    bool   = False,
         reason:     str    = "",
     ):
-        """Registra la decisión del modelo de IA."""
+        """Registra la decisión del modelo de IA_BackTests."""
         self.log_event("AI_DECISION", {
             "action":     action,
             "confidence": round(confidence, 4),

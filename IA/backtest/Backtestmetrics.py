@@ -1,3 +1,4 @@
+from __future__ import annotations
 """
 BacktestMetrics.py
 Calcula todas las métricas financieras profesionales sobre un BacktestResult.
@@ -9,8 +10,6 @@ Métricas implementadas:
     Trades          win rate, profit factor, payoff ratio, avg duración
     Estadísticas    VaR 95%, CVaR 95%, skewness, kurtosis
 """
-
-from __future__ import annotations
 
 import numpy as np
 import pandas as pd

@@ -1,3 +1,4 @@
+from __future__ import annotations
 """
 RealTime_Market_Data.py
 Clase Bar y MarketDataHandler.
@@ -6,13 +7,10 @@ MarketDataHandler recibe barras crudas de IBApi y las ensambla en velas
 del timeframe configurado. Cuando cierra una vela notifica via callbacks.
 
 Cambios vs versión anterior:
-    - strategy ahora es opcional (None = solo IA decide)
-    - Nuevo callback set_bar_close_callback() → notifica al Bot/IA con la Bar cerrada
+    - strategy ahora es opcional (None = solo IA_BackTests decide)
+    - Nuevo callback set_bar_close_callback() → notifica al Bot/IA_BackTests con la Bar cerrada
     - BUG FIX: condición del low era ">" en lugar de "<"
 """
-
-from __future__ import annotations
-
 import math
 from datetime import datetime
 from typing import Optional, Callable
@@ -56,7 +54,7 @@ class MarketDataHandler:
 
     Callbacks disponibles:
         set_signal_callback(fn)     → fn(close_price) cuando SMAStrategy señala entrada
-        set_bar_close_callback(fn)  → fn(Bar) cada vez que cierra una vela (para la IA)
+        set_bar_close_callback(fn)  → fn(Bar) cada vez que cierra una vela (para la IA_BackTests)
     """
 
     TZ = pytz.timezone("America/New_York")
@@ -67,7 +65,7 @@ class MarketDataHandler:
         strategy: Optional[SMAStrategy] = None,
     ):
         self.barsize   = barsize
-        self.strategy  = strategy      # Puede ser None si solo usa IA
+        self.strategy  = strategy      # Puede ser None si solo usa IA_BackTests
         self.bars:     list[Bar] = []
         self.current_bar = Bar()
         self._init_time  = datetime.now().astimezone(self.TZ)

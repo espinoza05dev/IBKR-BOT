@@ -160,7 +160,7 @@ class KnowledgeIngestor:
             "log_entries":  len(self._log),
         }
 
-    def export_log(self, path: str = "IA/KnowledgeBase/ingestion_log.json"):
+    def export_log(self, path: str = "IA_BackTestsKnowledgeBase/ingestion_log.json"):
         Path(path).parent.mkdir(parents=True, exist_ok=True)
         with open(path, "w") as f:
             json.dump(self._log, f, indent=2, ensure_ascii=False)

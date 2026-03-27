@@ -17,7 +17,7 @@ from datetime import datetime
 from typing import Optional, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from IA.SessionLogger import SessionLogger
+    from Sessionlogger import SessionLogger
 
 
 @dataclass

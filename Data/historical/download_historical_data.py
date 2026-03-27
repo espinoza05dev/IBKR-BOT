@@ -43,7 +43,7 @@ def main():
     # dm = DataManager()
     # dfs = dm.download_many(["AAPL", "MSFT", "TSLA"], interval="1d")
 
-    print("\n✓ Descarga completada. Datos en IA/Data/historical/")
+    print("\n✓ Descarga completada. Datos en IA_BackTests/Data/historical/")
     print("  Siguiente paso: python train_model.py\n")
 
 

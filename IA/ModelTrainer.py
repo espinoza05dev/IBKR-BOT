@@ -42,8 +42,8 @@ from stable_baselines3.common.vec_env import (
     VecMonitor,
 )
 
-from IA.TradingEnvironment import TradingEnvironment
-from IA.FeatureEngineering import FeatureEngineer
+from TradingEnvironment import TradingEnvironment
+from FeatureEngineering import FeatureEngineer
 
 
 MODELS_DIR = Path(f"C:\\Users\\artur\\Programming\\PycharmProjects\\python_autotrader\\IA\\models")

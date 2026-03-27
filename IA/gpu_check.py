@@ -3,7 +3,7 @@ gpu_check.py
 Diagnóstico completo del entorno GPU antes de entrenar.
 Ejecutar UNA VEZ para verificar que todo está configurado correctamente.
 
-    python IA/gpu_check.py
+    python IA_BackTests/gpu_check.py
 """
 
 import sys
@@ -140,7 +140,7 @@ def recommend_config(device: str, vram_gb: float = 0, cpu_cores: int = 4):
 
 def main():
     print("╔═══════════════════════════════════════════════╗")
-    print("║         GPU Check — AutoTrader  IA            ║")
+    print("║         GPU Check — AutoTrader  IA_BackTests            ║")
     print("╚═══════════════════════════════════════════════╝\n")
 
     print("── Sistema ──────────────────────────────────────")

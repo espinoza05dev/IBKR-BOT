@@ -19,8 +19,8 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from IA.backtest.Backtestengine import BacktestResult
 
-REPORTS_DIR = Path("IA/backtest/reports")
-
+# REPORTS_DIR = Path("IA_BackTests/backtest/reports")
+REPORTS_DIR = Path("C:\\Users\\artur\\Programming\\PycharmProjects\\python_autotrader\\IA\\IA_BackTests\\backtest\\reports")
 
 class BacktestReport:
     """
@@ -29,7 +29,7 @@ class BacktestReport:
 
     Uso:
         report = BacktestReport(result, metrics)
-        path   = report.save()          # Guarda HTML en IA/backtest/reports/
+        path   = report.save()          # Guarda HTML en IA_BackTests/backtest/reports/
         report.show()                   # Abre en el navegador por defecto
     """
 
@@ -186,7 +186,7 @@ new Chart(document.getElementById('equityChart'), {{
   data: {{
     labels,
     datasets: [
-      {{ label: 'Modelo IA', data: equity, borderColor: '#68d391',
+      {{ label: 'Modelo IA_BackTests', data: equity, borderColor: '#68d391',
          backgroundColor: 'rgba(104,211,145,.08)', borderWidth: 2,
          pointRadius: 0, tension: .3, fill: true }},
       {{ label: 'Buy & Hold', data: bh, borderColor: '#63b3ed',

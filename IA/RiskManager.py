@@ -1,6 +1,6 @@
 """
 RiskManager.py
-Capa de gestion de riesgo que envuelve las decisiones del agente IA.
+Capa de gestion de riesgo que envuelve las decisiones del agente IA_BackTests.
 Nunca permite que el agente opere fuera de los limites de riesgo definidos.
 """
 
@@ -31,7 +31,7 @@ class PortfolioState:
 
 class RiskManager:
     """
-    Verifica cada decision del agente IA contra las reglas de riesgo.
+    Verifica cada decision del agente IA_BackTests contra las reglas de riesgo.
 
     Uso:
         rm = RiskManager(config=RiskConfig())
