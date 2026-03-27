@@ -1,0 +1,21 @@
+-----------------------------------ORDEN DE EJECUCION----------------------------------
+1- Darle contenido a la IA en el archivo [---knowledgeIngestor---] sobre trading, economia,
+    bolsa de valores etc
+
+2- Descargar Datos historicos de las empresas en el arhivo [---download_historical_data---]
+    se le puede dar n cantidad de empresas y guardara los datos historicos
+
+3- entrenar el modelo de IA en el arhivo [---Train model---] DAR UN SIMBOLO/TICKER A LA VEZ
+   hacerlo bastante veces y con las diferentes opciones que hay, preferible con los datos
+   historicos ya descargados (si ya esta listo para ponerse a prueba seguir al siguiente paso)
+
+4- HACER EL TEST DL SIMBOLO/TICKER DEL CUAL SE ENTRENÓ PREVIAMENTE, hacerle test
+    en el archivo [---Back_Test---]
+
+5- una vez hecho todo lo anterior con exito, ejecutar [---IBKR Bot---] (ponerlo en modo PAPER MODE)
+                            (-----AVISO------)
+   si consigue ganancias buenas/rentables, ponerlo en MODO LIVE (dinero real)
+
+(opcional) 6- ejecuta [---gpu_check---], revisa si se esta usando la CPU O GPU, al momento de
+              hacer el entrenamiento con [---Train model---]
+----------------------------------------------------------------------------------------
