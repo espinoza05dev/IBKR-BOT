@@ -214,7 +214,7 @@ class TradingAI:
 
     def load(self) -> "TradingAI":
         """Carga el modelo PPO y el normalizador desde disco."""
-        model_path = MODELS_DIR / self.symbol / "best_model"
+        model_path = MODELS_DIR / self.symbol / "best_model.zip"
         norm_path  = MODELS_DIR / self.symbol / "vec_normalize.pkl"
 
         if not model_path.with_suffix(".zip").exists():

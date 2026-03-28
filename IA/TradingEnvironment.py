@@ -81,6 +81,7 @@ class TradingEnvironment(gym.Env):
         elif action == 2 and self.in_position:  # SELL
             pnl = (current_price - self.entry_price) / self.entry_price
             reward = pnl * self.REWARD_SCALE
+            if pnl > 0: reward += 1.0
             self.balance += current_price - self.entry_price
             self.balance -= current_price * self.TRANSACTION_COST
             self.total_trades += 1
@@ -89,8 +90,11 @@ class TradingEnvironment(gym.Env):
 
         if self.in_position:
             unrealized = (current_price - self.entry_price) / max(self.entry_price, 1e-9)
+            reward += unrealized * 0.01
             if unrealized < -0.02:
-                reward -= 0.1
+                reward -= 0.5
+        else:
+            reward -= 0.001
 
         self.peak_balance = max(self.peak_balance, self.balance)
         drawdown = (self.peak_balance - self.balance) / max(self.peak_balance, 1e-9)

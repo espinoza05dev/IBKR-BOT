@@ -1,3 +1,4 @@
+from __future__ import annotations
 """
 SessionLogger.py
 Registra todo lo que ocurre durante una sesión de trading:
@@ -10,8 +11,6 @@ Registra todo lo que ocurre durante una sesión de trading:
 Guarda en: IA_BackTests/logs/sessions/AAPL_paper_20240315_143022.jsonl
 (Un JSON por línea para fácil análisis posterior)
 """
-
-from __future__ import annotations
 
 import json
 import threading

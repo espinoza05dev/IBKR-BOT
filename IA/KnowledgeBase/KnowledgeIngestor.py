@@ -213,29 +213,25 @@ class KnowledgeIngestor:
         })
 """
 Uso:
-        ki = KnowledgeIngestor()
+        ingresar_info = KnowledgeIngestor()
 
         # Archivo individual
-        ki.ingest("trading_for_dummies.pdf")
-        ki.ingest("podcast_mercados.mp3")
-        ki.ingest("grafico_btc.png")
-        ki.ingest("https://youtube.com/watch?v=XYZ")
-        ki.ingest("https://bloomberg.com/article/...")
+        ingresar_info.ingest("trading_for_dummies.pdf")
+        ingresar_info.ingest("podcast_mercados.mp3")
+        ingresar_info.ingest("grafico_btc.png")
+        ingresar_info.ingest("https://youtube.com/watch?v=XYZ")
+        ingresar_info.ingest("https://bloomberg.com/article/...")
 
         # Carpeta completa
-        ki.ingest_folder("mis_recursos/")
+        ingresar_info.ingest_folder("mis_recursos/")
 
         # Texto directo
-        ki.ingest_text("El RSI sobre 70 indica sobrecompra.", source="nota_manual")
+        ingresar_info.ingest_text("El RSI sobre 70 indica sobrecompra.", source="nota_manual")
 
         # Consulta al conocimiento
         resultados = ki.query("estrategia de ruptura de resistencia")
+        
+        yt-dlp --flat-playlist -i "https://www.youtube.com/playlist?list=PLzjPEWJnnJNqFVLqpsnVAZoLuwpbq5_E5" --print "https://youtu.be/%(id)s"
+        ejecutar en terminal para ver todos los link de una lista de videos de youtube
+
 """
-
-ingresar_info = KnowledgeIngestor()
-# ingresar_info.ingest_folder("content/")
-#yt-dlp --flat-playlist -i "https://www.youtube.com/playlist?list=PLzjPEWJnnJNqFVLqpsnVAZoLuwpbq5_E5" --print "https://youtu.be/%(id)s"
-#ejecutar en terminal para ver todos los link de una lista de videos de youtube
-# ingresar_info.ingest("")
-
-# ingresar_info.ingest_text("",source="nota_manual")

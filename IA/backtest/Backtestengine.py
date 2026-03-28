@@ -131,9 +131,17 @@ class BacktestEngine:
         self._model = PPO.load(mp, device="cpu")   # CPU para backtest (más estable)
 
         if Path(np_).exists():
-            dummy      = DummyVecEnv([lambda: TradingEnvironment(
-                pd.DataFrame(columns=["open","high","low","close","volume"])
-            )])
+            # Cargar primero el modelo para saber el observation_space
+            tmp_env = TradingEnvironment(
+                pd.DataFrame({c: [0.0] * 50
+                              for c in ["close_norm", "returns_1", "returns_5", "returns_10",
+                                        "sma20_dist", "sma50_dist", "ema12_dist", "ema26_dist",
+                                        "rsi", "macd", "macd_signal", "bb_upper_dist",
+                                        "bb_lower_dist", "atr_norm", "volume_norm",
+                                        "stoch_k", "stoch_d", "adx",
+                                        "open", "high", "low", "close", "volume"]})
+            )
+            dummy = DummyVecEnv([lambda: tmp_env])
             self._norm = VecNormalize.load(np_, dummy)
             self._norm.training = False
             self._norm.norm_reward = False

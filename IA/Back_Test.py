@@ -28,7 +28,7 @@ from backtest.Backtestreport     import BacktestReport
 # ╚════════════════════════════════════════════════════════╝
 
 SYMBOL          = "AAL"       # Símbolo del modelo a evaluar
-INTERVAL        = "1m"
+INTERVAL        = "1h"
 SOURCE          = "yfinance"
 START_TRAIN     = "2013-01-01"  # Inicio del dataset completo
 START_TEST      = "2014-01-01"  # Los datos de TEST deben ser POSTERIORES al entrenamiento

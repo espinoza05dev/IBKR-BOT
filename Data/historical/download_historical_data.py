@@ -16,7 +16,7 @@ def main():
 
     # ── Configuración ─────────────────────────────────────────────────────────
     SYMBOLS  = ["AAL"]
-    INTERVAL = "1m"                        # "1m" "5m" "15m" "1h" "1d"
+    INTERVAL = "1h"                        # "1m" "5m" "15m" "1h" "1d"
     START    = "2013-01-01"                # Fecha de inicio
     SOURCE   = "yfinance"                  # "yfinance" | "ibkr" | "av" | "csv"
 

@@ -45,7 +45,7 @@ from IA.Papertradingmonitor import PaperTradingMonitor
 #  CONFIGURACIÓN — edita solo esta sección
 # ══════════════════════════════════════════════════════════════════════════════
 
-SYMBOL       = "PG"    # Símbolo a operar, la IA_BackTests debe de haber sido entrenada con el simbolo antes de ejecutal el BOT
+SYMBOL       = "AAL"    # Símbolo a operar, la IA_BackTests debe de haber sido entrenada con el simbolo antes de ejecutal el BOT
 INTERVAL_MIN = 60        # Tamaño de vela en minutos (ej: 60 = velas de 1h)
 INITIAL_CASH = 10_000.0  # Capital inicial (informativo para el monitor)
 

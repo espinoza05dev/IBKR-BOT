@@ -14,7 +14,6 @@ import time
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
-
 import numpy as np
 import pandas as pd
 import torch
@@ -22,7 +21,7 @@ import torch
 # ── OPTIMIZACIÓN CRÍTICA PARA CPU/GPU ─────────────────────────────────────────
 # Evita que la CPU pelee consigo misma intentando usar todos los hilos
 # en cada entorno. Mantiene la CPU libre para alimentar a la GPU.
-torch.set_num_threads(6)
+torch.set_num_threads(3)
 # ──────────────────────────────────────────────────────────────────────────────
 
 from stable_baselines3 import PPO
@@ -40,10 +39,8 @@ from stable_baselines3.common.vec_env import (
     VecNormalize,
     VecMonitor,
 )
-
 from IA.TradingEnvironment import TradingEnvironment
 from IA.FeatureEngineering import FeatureEngineer
-
 
 MODELS_DIR = Path(f"C:\\Users\\artur\\Programming\\PycharmProjects\\python_autotrader\\IA\\models")
 LOGS_DIR   = Path("C:\\Users\\artur\\Programming\\PycharmProjects\\python_autotrader\\IA\\logs")
@@ -72,7 +69,6 @@ def detect_device() -> str:
     print("[GPU] Sin GPU disponible — usando CPU")
     return "cpu"
 
-
 def recommended_n_envs(device: str) -> int:
     """
     Número de entornos paralelos recomendado según el hardware.
@@ -86,7 +82,6 @@ def recommended_n_envs(device: str) -> int:
     if device == "mps":
         return 8
     return min(cores, 8)
-
 
 # ══════════════════════════════════════════════════════════════════════════════
 # Callbacks
@@ -137,11 +132,12 @@ class TrainingProgressCallback(BaseCallback):
         print(f"  Entrenamiento finalizado  |  Duración: {elapsed/60:.1f} min")
         print(f"{'─'*60}\n")
 
-
 class EarlyStoppingCallback(BaseCallback):
     """Para el entrenamiento si no mejora en `patience` evaluaciones."""
 
-    def __init__(self, patience: int = 8, min_delta: float = 0.5, verbose: int = 1):
+    # patience = 12 y min_dela = 0.05 para modo OPTUNA
+    #patience = 30 y min_delta = 0.01 para modo A
+    def __init__(self, patience: int = 12, min_delta: float = 0.05, verbose: int = 1):
         super().__init__(verbose)
         self.patience     = patience
         self.min_delta    = min_delta
@@ -236,7 +232,6 @@ class PPOConfig:
             batch //= 2
         return cls(n_steps=2048, batch_size=batch)
 
-
 # ══════════════════════════════════════════════════════════════════════════════
 # ModelTrainer
 # ══════════════════════════════════════════════════════════════════════════════
@@ -283,9 +278,9 @@ class ModelTrainer:
     def train(
         self,
         df:              pd.DataFrame,
-        total_timesteps: int   = 10_000_000,
-        eval_freq:       int   = 20_000,
-        n_eval_episodes: int   = 5,
+        total_timesteps: int   = 20_000_000,
+        eval_freq:       int   = 50_000,
+        n_eval_episodes: int   = 15,
         eval_split:      float = 0.20,
         resume:          bool  = False,
     ) -> "ModelTrainer":
@@ -346,7 +341,9 @@ class ModelTrainer:
             log_every   = max(eval_freq // 2, 5_000),
             total_steps = total_timesteps,
         )
-        early_stop_cb = EarlyStoppingCallback(patience=8)
+        # patience = 12 para modo OPTUNA
+        # patience = 30 para modo A
+        early_stop_cb = EarlyStoppingCallback(patience=12)
         eval_cb       = EvalCallback(
             eval_env,
             callback_after_eval  = early_stop_cb,
@@ -492,12 +489,12 @@ class ModelTrainer:
 
         def objective(trial: optuna.Trial) -> float:
             cfg = PPOConfig(
-                learning_rate = trial.suggest_float("lr",      1e-5, 1e-3, log=True),
-                n_steps       = trial.suggest_categorical("n_steps", [1024, 2048, 4096]),
-                batch_size    = trial.suggest_categorical("batch",   [256, 512, 1024]),
-                n_epochs      = trial.suggest_int("epochs",   5, 20),
+                learning_rate = trial.suggest_float("lr",1e-5, 1e-3, log=True),
+                n_steps       = trial.suggest_categorical("n_steps", [4096, 8192, 16384]),
+                batch_size    = trial.suggest_categorical("batch",   [2048, 4096, 8192]),
+                n_epochs      = trial.suggest_int("epochs",   5, 15),
                 gamma         = trial.suggest_float("gamma",  0.90, 0.9999),
-                ent_coef      = trial.suggest_float("ent",    0.001, 0.05, log=True),
+                ent_coef      = trial.suggest_float("ent",    0.00001, 0.01, log=True),
                 clip_range    = trial.suggest_float("clip",   0.1, 0.4),
             )
             total_buf = cfg.n_steps * self.n_envs

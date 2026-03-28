@@ -108,3 +108,7 @@ class DataPipeline:
         train.to_csv(folder / f"{symbol.upper()}_{interval}_train.csv")
         test.to_csv(folder  / f"{symbol.upper()}_{interval}_test.csv")
         print(f"[Pipeline] Splits guardados en {folder}/")
+
+if __name__ == "__main__":
+    pipeline = DataPipeline()
+    train_df, test_df = pipeline.run("MSFT", interval="1h", start="2014-01-01")
