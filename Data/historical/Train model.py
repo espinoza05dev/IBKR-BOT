@@ -2,12 +2,6 @@
 train_model.py
 Script de entrenamiento con soporte GPU/CPU completo.
 
-Modos:
-    A → Pipeline completo (descarga + features + entrena)  ← primer uso
-    B → Datos ya en disco
-    C → Reanudar desde checkpoint
-    D → Optimización de hiperparámetros (Optuna)
-
 Ejecución:
     python train_model.py
 """
@@ -24,9 +18,9 @@ from IA.ModelTrainer import ModelTrainer, PPOConfig
 # ║              CONFIGURACIÓN — edita solo aquí              ║
 # ╚═══════════════════════════════════════════════════════════╝
 
-SYMBOL      = "PYPL"       # Símbolo a entrenar
-INTERVAL    = "1h"         # Timeframe: "1m" "5m" "15m" "1h" "1d"
-START       = "2010-01-01" # Inicio del histórico
+SYMBOL      = "AAL"       # Símbolo a entrenar
+INTERVAL    = "1m"         # Timeframe: "1m" "5m" "15m" "1h" "1d"
+START       = "2013-01-01" # Inicio del histórico
 SOURCE      = "yfinance"   # "yfinance" | "ibkr" | "av"
 
 # ── GPU / paralelismo ──────────────────────────────────────────────────────
@@ -42,15 +36,21 @@ N_ENVS      = 16        # 0 = auto según hardware
 
 # ── Timesteps ─────────────────────────────────────────────────────────────
 # CPU 500_000  ≈ 40 min   →   GPU 2_000_000  ≈ 15 min  (mismo resultado)
-TIMESTEPS   = 70_000_000
+TIMESTEPS   = 10_000_000
 # TIMESTEPS = 500_000    # Si usas solo CPU
 
 EVAL_FREQ       = 20_000  # Evaluar cada N pasos
 N_EVAL_EPISODES = 5
 EVAL_SPLIT      = 0.20    # 20% reservado para evaluación
 
-MODE = "D"   # "A" | "B" | "C" | "D"
-
+MODE = "B"   # "A" | "B" | "C" | "D"
+"""
+    Modos:
+    A → Pipeline completo (descarga + features + entrena)  ← primer uso
+    B → Datos ya en disco
+    C → Reanudar desde checkpoint
+    D → Optimización de hiperparámetros (Optuna)
+"""
 # ── Config manual (opcional — None = auto según GPU/CPU) ──────────────────
 # CUSTOM_CONFIG = None
 # Ejemplo GPU RTX 3060 8GB:

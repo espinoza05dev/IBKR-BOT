@@ -15,9 +15,9 @@ def main():
     print("╚══════════════════════════════════════╝\n")
 
     # ── Configuración ─────────────────────────────────────────────────────────
-    SYMBOLS  = ["PYPL"]
-    INTERVAL = "1h"                        # "1m" "5m" "15m" "1h" "1d"
-    START    = "2010-01-01"                # Fecha de inicio
+    SYMBOLS  = ["AAL"]
+    INTERVAL = "1m"                        # "1m" "5m" "15m" "1h" "1d"
+    START    = "2013-01-01"                # Fecha de inicio
     SOURCE   = "yfinance"                  # "yfinance" | "ibkr" | "av" | "csv"
 
     # ── Opción A: Pipeline completo (recomendado para entrenar) ───────────────
@@ -43,7 +43,7 @@ def main():
     # dm = DataManager()
     # dfs = dm.download_many(["AAPL", "MSFT", "TSLA"], interval="1d")
 
-    print("\n✓ Descarga completada. Datos en IA_BackTests/Data/historical/")
+    print("\n✓ Descarga completada. Datos en IA/Data/historical/")
     print("  Siguiente paso: python train_model.py\n")
 
 

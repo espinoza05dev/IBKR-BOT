@@ -27,21 +27,21 @@ from backtest.Backtestreport     import BacktestReport
 # ║           CONFIGURACIÓN — edita solo aquí              ║
 # ╚════════════════════════════════════════════════════════╝
 
-SYMBOL          = "CAT"       # Símbolo del modelo a evaluar
-INTERVAL        = "1h"
+SYMBOL          = "AAL"       # Símbolo del modelo a evaluar
+INTERVAL        = "1m"
 SOURCE          = "yfinance"
-START_TRAIN     = "2014-01-01"  # Inicio del dataset completo
-START_TEST      = "2016-01-01"  # Los datos de TEST deben ser POSTERIORES al entrenamiento
+START_TRAIN     = "2013-01-01"  # Inicio del dataset completo
+START_TEST      = "2014-01-01"  # Los datos de TEST deben ser POSTERIORES al entrenamiento
 END_TEST        = None          # None = hasta hoy
 
-INITIAL_BALANCE = 10.0
+INITIAL_BALANCE = 10000.0
 COMMISSION      = 0.001        # 0.1% por operación
 
 MODE = "single"   # "single" | "walkforward" | "compare"
 
 # Walk-forward (solo Modo walkforward)
 WF_N_WINDOWS          = 4
-WF_TIMESTEPS_WINDOW   = 1_000_000   # Steps por ventana (más rápido que entrenamiento completo)
+WF_TIMESTEPS_WINDOW   = 10_000_000   # Steps por ventana (más rápido que entrenamiento completo)
 
 # Multi-símbolo (solo Modo compare)
 COMPARE_SYMBOLS = ["AAPL", "MSFT", "NVDA"]

@@ -1,3 +1,4 @@
+from __future__ import annotations
 """
 ModelTrainer.py
 Entrena, evalúa, optimiza hiperparámetros y persiste el agente PPO.
@@ -6,8 +7,6 @@ Soporte completo para GPU (CUDA), Apple Silicon (MPS) y CPU.
 VERSIÓN EXTREMA: Optimizada con DummyVecEnv y torch.set_num_threads(1)
 para maximizar steps/s eliminando la latencia IPC.
 """
-
-from __future__ import annotations
 
 import json
 import os
@@ -23,7 +22,7 @@ import torch
 # ── OPTIMIZACIÓN CRÍTICA PARA CPU/GPU ─────────────────────────────────────────
 # Evita que la CPU pelee consigo misma intentando usar todos los hilos
 # en cada entorno. Mantiene la CPU libre para alimentar a la GPU.
-torch.set_num_threads(4)
+torch.set_num_threads(6)
 # ──────────────────────────────────────────────────────────────────────────────
 
 from stable_baselines3 import PPO
@@ -42,8 +41,8 @@ from stable_baselines3.common.vec_env import (
     VecMonitor,
 )
 
-from TradingEnvironment import TradingEnvironment
-from FeatureEngineering import FeatureEngineer
+from IA.TradingEnvironment import TradingEnvironment
+from IA.FeatureEngineering import FeatureEngineer
 
 
 MODELS_DIR = Path(f"C:\\Users\\artur\\Programming\\PycharmProjects\\python_autotrader\\IA\\models")
@@ -284,7 +283,7 @@ class ModelTrainer:
     def train(
         self,
         df:              pd.DataFrame,
-        total_timesteps: int   = 80_000_000,
+        total_timesteps: int   = 10_000_000,
         eval_freq:       int   = 20_000,
         n_eval_episodes: int   = 5,
         eval_split:      float = 0.20,

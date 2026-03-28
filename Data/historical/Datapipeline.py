@@ -41,7 +41,7 @@ class DataPipeline:
         self,
         symbol:   str,
         interval: str = "1h",
-        start:    str = "2021-01-01",
+        start:    str = "2005-01-01",
         end:      str | None = None,
         force_download: bool = False,
     ) -> tuple[pd.DataFrame, pd.DataFrame]:
@@ -90,7 +90,7 @@ class DataPipeline:
         self,
         symbols:  list[str],
         interval: str = "1d",
-        start:    str = "2020-01-01",
+        start:    str = "2005-01-01",
     ) -> dict[str, tuple[pd.DataFrame, pd.DataFrame]]:
         """Corre el pipeline para múltiples símbolos."""
         results = {}
