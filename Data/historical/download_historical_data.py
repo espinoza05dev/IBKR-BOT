@@ -2,7 +2,7 @@
 download_data.py
 Script listo para ejecutar desde la terminal.
 """
-from Data.historical.Datapipeline   import DataPipeline
+from Data.historical.Datapipeline import DataPipeline
 
 def main():
     print("\n╔══════════════════════════════════════╗")

@@ -32,11 +32,11 @@ from datetime import datetime
 from ibapi.contract import Contract
 from core.BrockerConnection  import IBApi
 from core.Portfolio         import Portfolio
-from Data.RealTime_Market_Data import MarketDataHandler, Bar
-from IA.TradingAI           import TradingAI
-from IA.RiskManager         import RiskConfig
-from IA.Sessionlogger       import SessionLogger
-from IA.Papertradingmonitor import PaperTradingMonitor
+from Data.providers.RealTime_Market_Data import MarketDataHandler, Bar
+from src.brain.TradingAI import TradingAI
+from src.risk.RiskManager import RiskConfig
+from src.utils.Sessionlogger import SessionLogger
+from core.Papertradingmonitor import PaperTradingMonitor
 
 
 # ══════════════════════════════════════════════════════════════════════════════

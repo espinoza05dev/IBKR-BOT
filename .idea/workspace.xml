@@ -5,24 +5,36 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="96faf10a-d2b9-4e2a-b874-9fe6a8b78abb" name="Changes" comment=".">
-      <change afterPath="$PROJECT_DIR$/Model_factory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/python_autotrader.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/python_autotrader.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/RealTime_Market_Data.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data/RealTime_Market_Data.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/historical/Datadownloader.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data/historical/Datadownloader.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/historical/Datapipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data/historical/Datapipeline.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/historical/Train_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data/historical/Train_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/historical/download_historical_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data/historical/download_historical_data.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IA/Back_Test.py" beforeDir="false" afterPath="$PROJECT_DIR$/IA/Back_Test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IA/FeatureEngineering.py" beforeDir="false" afterPath="$PROJECT_DIR$/IA/FeatureEngineering.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/RealTime_Market_Data.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data/providers/RealTime_Market_Data.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/historical/Datadownloader.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data/Datadownloader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/historical/Datapipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data/Datapipeline.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/historical/Train_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data/Train_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/historical/download_historical_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data/download_historical_data.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IA/Back_Test.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Back_Test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IA/FeatureEngineering.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/brain/FeatureEngineering.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/IA/KnowledgeBase/IA/KnowledgeBase/db/chroma.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/IA/KnowledgeBase/IA/KnowledgeBase/db/chroma.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IA/KnowledgeBase/KnowledgeIngestor.py" beforeDir="false" afterPath="$PROJECT_DIR$/IA/KnowledgeBase/KnowledgeIngestor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IA/Papertradingmonitor.py" beforeDir="false" afterPath="$PROJECT_DIR$/IA/Papertradingmonitor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IA/Sessionlogger.py" beforeDir="false" afterPath="$PROJECT_DIR$/IA/Sessionlogger.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IA/TradingAI.py" beforeDir="false" afterPath="$PROJECT_DIR$/IA/TradingAI.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IA/KnowledgeBase/KnowledgeIngestor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/knowledge/KnowledgeIngestor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IA/KnowledgeBase/Processors/AudioProcessor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/knowledge/Processors/AudioProcessor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IA/KnowledgeBase/Processors/Imageprocessor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/knowledge/Processors/Imageprocessor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IA/KnowledgeBase/Processors/TextProcessor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/knowledge/Processors/TextProcessor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IA/KnowledgeBase/Processors/Videoprocessor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/knowledge/Processors/Videoprocessor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IA/KnowledgeBase/VectorStore.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/knowledge/VectorStore.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IA/ModelTrainer.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/brain/ModelTrainer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IA/Papertradingmonitor.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/Papertradingmonitor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IA/RiskManager.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/risk/RiskManager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IA/Sessionlogger.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/Sessionlogger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IA/TradingAI.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/brain/TradingAI.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IA/TradingEnvironment.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/brain/TradingEnvironment.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IA/backtest/Backtestengine.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/backtest/Backtestengine.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IA/backtest/Backtestmetrics.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/backtest/Backtestmetrics.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IA/backtest/Backtestreport.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/backtest/Backtestreport.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IA/gpu_check.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/gpu_check.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/IBKR Bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/IBKR Bot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/BrockerConnection.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/BrockerConnection.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/Portfolio.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/Portfolio.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model_factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/brain/Model_factory.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,8 +91,9 @@
     "Python.Videoprocessor.executor": "Run",
     "Python.download_historical_data.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "feature-Order__folders",
     "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/artur/Programming/PycharmProjects/IBKR_AI_BOT",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -92,8 +105,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\artur\Programming\PycharmProjects\python_autotrader\IA\IA_BackTests" />
-      <recent name="C:\Users\artur\Programming\PycharmProjects\python_autotrader\IA\LogsSession\sessions" />
+      <recent name="C:\Users\artur\Programming\PycharmProjects\IBKR_AI_BOT\Data" />
+      <recent name="C:\Users\artur\Programming\PycharmProjects\IBKR_AI_BOT\IA\Data\historical" />
+      <recent name="C:\Users\artur\Programming\PycharmProjects\IBKR_AI_BOT\src\utils" />
+      <recent name="C:\Users\artur\Programming\PycharmProjects\IBKR_AI_BOT\core" />
+      <recent name="C:\Users\artur\Programming\PycharmProjects\IBKR_AI_BOT\src\brain" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -120,6 +136,8 @@
       <workItem from="1774375363385" duration="7763000" />
       <workItem from="1774405513283" duration="2839000" />
       <workItem from="1774706670324" duration="24583000" />
+      <workItem from="1774927037941" duration="565000" />
+      <workItem from="1774928189792" duration="4524000" />
     </task>
     <task id="LOCAL-00001" summary="ibkr bot, falta que probarlo, tengo que tener una suscripciones de 5 usd para tener datos en tiempo real">
       <option name="closed" value="true" />
@@ -201,7 +219,15 @@
       <option name="project" value="LOCAL" />
       <updated>1774720825395</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary=".">
+      <option name="closed" value="true" />
+      <created>1774927310201</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1774927310201</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

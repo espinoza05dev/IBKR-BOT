@@ -12,7 +12,7 @@ from pathlib import Path
 import pandas as pd
 
 from Data.historical.Datadownloader import DataManager
-from IA.FeatureEngineering import FeatureEngineer
+from src.brain.FeatureEngineering import FeatureEngineer
 
 
 class DataPipeline:
@@ -100,7 +100,7 @@ class DataPipeline:
 
     @staticmethod
     def _save_splits(train: pd.DataFrame, test: pd.DataFrame, symbol: str, interval: str):
-        folder = Path(f"IA/Data/historical") / symbol.upper()
+        folder = Path(f"/Data/historical") / symbol.upper()
         folder.mkdir(parents=True, exist_ok=True)
         train.to_csv(folder / f"{symbol.upper()}_{interval}_train.csv")
         test.to_csv(folder  / f"{symbol.upper()}_{interval}_test.csv")

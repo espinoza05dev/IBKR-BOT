@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Optional
 import pandas as pd
 
-DATA_DIR = Path(f"Data/historical")
+DATA_DIR = Path(f"/IA/Data/historical")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
