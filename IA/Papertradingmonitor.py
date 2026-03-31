@@ -1,3 +1,4 @@
+from __future__ import annotations
 """
 PaperTradingMonitor.py
 Dashboard de trading en tiempo real en la terminal.
@@ -6,8 +7,6 @@ Muestra P&L, posición actual, historial de trades y estado del RiskManager.
 Actualiza cada 5 segundos con la pantalla limpia para simular un dashboard live.
 Compatible con paper trading y live trading.
 """
-
-from __future__ import annotations
 
 import os
 import threading

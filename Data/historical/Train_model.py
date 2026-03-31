@@ -15,7 +15,7 @@ from IA.ModelTrainer import ModelTrainer, PPOConfig
 SYMBOL      = "AAL"       # Símbolo a entrenar
 INTERVAL    = "1h"         # Timeframe: "1m" "5m" "15m" "1h" "1d"
 START       = "2013-01-01" # Inicio del histórico
-SOURCE      = "ibkr"   # "yfinance" | "ibkr" | "av"
+SOURCE      = "yfinance"   # "yfinance" | "ibkr" | "av"
 
 # ── GPU / paralelismo ──────────────────────────────────────────────────────
 GPU_DEVICE  = "cuda"   # "auto" detecta CUDA→MPS→CPU automáticamente
@@ -30,14 +30,14 @@ N_ENVS      = 16        # 0 = auto según hardware
 
 # ── Timesteps ─────────────────────────────────────────────────────────────
 # CPU 500_000  ≈ 40 min   →   GPU 2_000_000  ≈ 15 min  (mismo resultado)
-TIMESTEPS   = 2_000_000 #pasos totales que hara la IA
+TIMESTEPS   = 1_000_000 #pasos totales que hara la IA
 # TIMESTEPS = 500_000    # Si usas solo CPU
 
 EVAL_FREQ       = 50_000  # Evaluar cada N pasos
 N_EVAL_EPISODES = 15
 EVAL_SPLIT      = 0.20    # 20% reservado para evaluación
 
-MODE = "D"   # "A" | "B" | "C" | "D"
+MODE = "B"   # "A" | "B" | "C" | "D"
 """
     Modos:
     A → Pipeline completo (descarga + features + entrena)  ← primer uso
@@ -56,7 +56,7 @@ CUSTOM_CONFIG = PPOConfig(
 )
 
 # Optuna (solo Modo D)
-OPTUNA_TRIALS      = 100 #cantidad de entrenamiento, cada uno es diferente
+OPTUNA_TRIALS      = 50 #cantidad de entrenamiento, cada uno es diferente
 OPTUNA_STEPS_TRIAL = 2_000_000 #cantidad de pasos que dara en cada entrenamiento
 
 

@@ -5,20 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="96faf10a-d2b9-4e2a-b874-9fe6a8b78abb" name="Changes" comment=".">
+      <change afterPath="$PROJECT_DIR$/Model_factory.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/RealTime_Market_Data.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data/RealTime_Market_Data.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/historical/Datadownloader.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data/historical/Datadownloader.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Data/historical/Datapipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data/historical/Datapipeline.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/historical/Train model.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data/historical/Train_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/historical/Train_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data/historical/Train_model.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Data/historical/download_historical_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data/historical/download_historical_data.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/IA/Back_Test.py" beforeDir="false" afterPath="$PROJECT_DIR$/IA/Back_Test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IA/FeatureEngineering.py" beforeDir="false" afterPath="$PROJECT_DIR$/IA/FeatureEngineering.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/IA/KnowledgeBase/IA/KnowledgeBase/db/chroma.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/IA/KnowledgeBase/IA/KnowledgeBase/db/chroma.sqlite3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/IA/KnowledgeBase/KnowledgeIngestor.py" beforeDir="false" afterPath="$PROJECT_DIR$/IA/KnowledgeBase/KnowledgeIngestor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IA/ModelTrainer.py" beforeDir="false" afterPath="$PROJECT_DIR$/IA/ModelTrainer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IA/Papertradingmonitor.py" beforeDir="false" afterPath="$PROJECT_DIR$/IA/Papertradingmonitor.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/IA/Sessionlogger.py" beforeDir="false" afterPath="$PROJECT_DIR$/IA/Sessionlogger.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/IA/TradingAI.py" beforeDir="false" afterPath="$PROJECT_DIR$/IA/TradingAI.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IA/TradingEnvironment.py" beforeDir="false" afterPath="$PROJECT_DIR$/IA/TradingEnvironment.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IA/backtest/Backtestengine.py" beforeDir="false" afterPath="$PROJECT_DIR$/IA/backtest/Backtestengine.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IA/backtest/Backtestmetrics.py" beforeDir="false" afterPath="$PROJECT_DIR$/IA/backtest/Backtestmetrics.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/IBKR Bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/IBKR Bot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/BrockerConnection.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/BrockerConnection.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/Portfolio.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/Portfolio.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,9 +68,11 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Python.Back_Test.executor": "Run",
+    "Python.Datadownloader.executor": "Run",
     "Python.Datapipeline.executor": "Run",
     "Python.IBKR Bot.executor": "Run",
     "Python.KnowledgeIngestor.executor": "Run",
+    "Python.Model_factory.executor": "Run",
     "Python.TradingAI.executor": "Run",
     "Python.Train model.executor": "Run",
     "Python.Train_model.executor": "Run",
@@ -84,6 +90,12 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\artur\Programming\PycharmProjects\python_autotrader\IA\IA_BackTests" />
+      <recent name="C:\Users\artur\Programming\PycharmProjects\python_autotrader\IA\LogsSession\sessions" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -107,7 +119,7 @@
       <workItem from="1774363672562" duration="489000" />
       <workItem from="1774375363385" duration="7763000" />
       <workItem from="1774405513283" duration="2839000" />
-      <workItem from="1774706670324" duration="9232000" />
+      <workItem from="1774706670324" duration="24583000" />
     </task>
     <task id="LOCAL-00001" summary="ibkr bot, falta que probarlo, tengo que tener una suscripciones de 5 usd para tener datos en tiempo real">
       <option name="closed" value="true" />
@@ -181,7 +193,15 @@
       <option name="project" value="LOCAL" />
       <updated>1774669266605</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary=".">
+      <option name="closed" value="true" />
+      <created>1774720825395</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1774720825395</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -197,16 +217,18 @@
     <option name="LAST_COMMIT_MESSAGE" value="." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/python_autotrader$download_historical_data.coverage" NAME="download_historical_data Coverage Results" MODIFIED="1774673314270" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Data/historical" />
-    <SUITE FILE_PATH="coverage/python_autotrader$KnowledgeIngestor.coverage" NAME="KnowledgeIngestor Coverage Results" MODIFIED="1774717995299" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/IA/KnowledgeBase" />
-    <SUITE FILE_PATH="coverage/python_autotrader$Back_Test.coverage" NAME="Back_Test Coverage Results" MODIFIED="1774671706599" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/IA" />
     <SUITE FILE_PATH="coverage/python_autotrader$TradingAI.coverage" NAME="TradingAI Coverage Results" MODIFIED="1774672991564" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/IA" />
+    <SUITE FILE_PATH="coverage/python_autotrader$Back_Test.coverage" NAME="Back_Test Coverage Results" MODIFIED="1774739491128" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/IA" />
+    <SUITE FILE_PATH="coverage/python_autotrader$Datadownloader.coverage" NAME="Datadownloader Coverage Results" MODIFIED="1774751418329" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Data/historical" />
+    <SUITE FILE_PATH="coverage/python_autotrader$IBKR_Bot.coverage" NAME="IBKR Bot Coverage Results" MODIFIED="1774673004461" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python_autotrader$Model_factory.coverage" NAME="Model_factory Coverage Results" MODIFIED="1774751421495" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python_autotrader$Datapipeline.coverage" NAME="Datapipeline Coverage Results" MODIFIED="1774718850648" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Data/historical" />
+    <SUITE FILE_PATH="coverage/python_autotrader$KnowledgeIngestor.coverage" NAME="KnowledgeIngestor Coverage Results" MODIFIED="1774737365031" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/IA/KnowledgeBase" />
+    <SUITE FILE_PATH="coverage/python_autotrader$download_historical_data.coverage" NAME="download_historical_data Coverage Results" MODIFIED="1774739286106" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Data/historical" />
     <SUITE FILE_PATH="coverage/python_autotrader$Videoprocessor.coverage" NAME="Videoprocessor Coverage Results" MODIFIED="1774662310165" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/IA/KnowledgeBase/Processors" />
     <SUITE FILE_PATH="coverage/python_autotrader$Backtestengine.coverage" NAME="Backtestengine Coverage Results" MODIFIED="1774559835335" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/IA/backtest" />
-    <SUITE FILE_PATH="coverage/python_autotrader$IBKR_Bot.coverage" NAME="IBKR Bot Coverage Results" MODIFIED="1774673004461" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/python_autotrader$gpu_check.coverage" NAME="gpu_check Coverage Results" MODIFIED="1774497478816" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/IA" />
     <SUITE FILE_PATH="coverage/python_autotrader$download_data.coverage" NAME="download_data Coverage Results" MODIFIED="1774616899413" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Data/historical" />
-    <SUITE FILE_PATH="coverage/python_autotrader$Train_model.coverage" NAME="Train_model Coverage Results" MODIFIED="1774712267904" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Data/historical" />
-    <SUITE FILE_PATH="coverage/python_autotrader$Datapipeline.coverage" NAME="Datapipeline Coverage Results" MODIFIED="1774718850648" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Data/historical" />
+    <SUITE FILE_PATH="coverage/python_autotrader$Train_model.coverage" NAME="Train_model Coverage Results" MODIFIED="1774740988339" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Data/historical" />
   </component>
 </project>

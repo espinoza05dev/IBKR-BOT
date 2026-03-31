@@ -2513,8 +2513,8 @@
 /IA/logs/PYPL_T18_cuda_1/events.out.tfevents.1774642174.S4LV4D0R.17032.18
 /IA/logs/PYPL_T19/evaluations.npz
 /IA/logs/PYPL_T19_cuda_1/events.out.tfevents.1774642350.S4LV4D0R.17032.19
-/IA/LogsSession/sessions/PG_paper_20260326_200140.jsonl
-/IA/LogsSession/sessions/PG_paper_20260326_200216.jsonl
+/IA/IA_BackTests/LogsSession/sessions/PG_paper_20260326_200140.jsonl
+/IA/IA_BackTests/LogsSession/sessions/PG_paper_20260326_200216.jsonl
 /IA/models/CVX/checkpoints/ppo_cvx_100000_steps.zip
 /IA/models/CVX/checkpoints/ppo_cvx_200000_steps.zip
 /IA/models/CVX/checkpoints/ppo_cvx_300000_steps.zip

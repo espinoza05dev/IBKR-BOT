@@ -1,3 +1,4 @@
+from __future__ import annotations
 """
 DataPipeline.py
 Orquesta el flujo completo:
@@ -7,12 +8,8 @@ Uso:
     pipeline = DataPipeline()
     train_df, test_df = pipeline.run("AAPL", interval="1h", start="2021-01-01")
 """
-
-from __future__ import annotations
-
 from pathlib import Path
 import pandas as pd
-import numpy as np
 
 from Data.historical.Datadownloader import DataManager
 from IA.FeatureEngineering import FeatureEngineer
@@ -108,7 +105,7 @@ class DataPipeline:
         train.to_csv(folder / f"{symbol.upper()}_{interval}_train.csv")
         test.to_csv(folder  / f"{symbol.upper()}_{interval}_test.csv")
         print(f"[Pipeline] Splits guardados en {folder}/")
-
-if __name__ == "__main__":
-    pipeline = DataPipeline()
-    train_df, test_df = pipeline.run("MSFT", interval="1h", start="2014-01-01")
+#
+# if __name__ == "__main__":
+#     pipeline = DataPipeline()
+#     train_df, test_df = pipeline.run("MSFT", interval="1h", start="2014-01-01")

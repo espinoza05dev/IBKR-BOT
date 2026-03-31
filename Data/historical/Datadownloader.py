@@ -1,3 +1,4 @@
+from __future__ import annotations
 """
 DataDownloader.py
 Descarga y normaliza datos OHLCV históricos desde múltiples fuentes:
@@ -10,18 +11,14 @@ Salida unificada: DataFrame con columnas → open, high, low, close, volume
 guardado en Data/historical/<SYMBOL>/<SYMBOL>_<interval>.csv
 """
 
-from __future__ import annotations
-
 import time
 import threading
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Optional
-
 import pandas as pd
-import numpy as np
 
-DATA_DIR = Path(f"IA/Data/historical")
+DATA_DIR = Path(f"Data/historical")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -504,7 +501,7 @@ class DataManager:
         self,
         symbol:   str,
         interval: str       = "1h",
-        start:    str       = "2020-01-01",
+        start:    str       = "2000-01-01",
         end:      str | None = None,
         source:   str       = "yfinance",
         **kwargs,

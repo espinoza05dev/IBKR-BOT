@@ -27,10 +27,7 @@ from IA.FeatureEngineering import FeatureEngineer
 from IA.RiskManager import RiskManager, RiskConfig
 from IA.TradingEnvironment import TradingEnvironment
 
-# MODELS_DIR usa ruta relativa para que funcione en cualquier máquina.
-# Si tu proyecto está en C:\Users\artur\...\python_autotrader, ejecuta
-# el bot SIEMPRE desde esa carpeta raíz y la ruta relativa funcionará.
-MODELS_DIR = Path("models")
+MODELS_DIR = Path("models/")
 
 
 class KnowledgeFilter:
@@ -165,24 +162,6 @@ class KnowledgeFilter:
 
 
 class TradingAI:
-    """
-    Agente de trading autonomo basado en PPO + RiskManager + KnowledgeBase.
-
-    Flujo en vivo:
-        1. Recibe nueva barra via on_new_bar()
-        2. Calcula features con FeatureEngineer
-        3. Pide accion al modelo (PPO.predict)
-        4. Consulta KnowledgeBase con el contexto actual  ← NUEVO
-        5. Valida con RiskManager
-        6. Emite senal via callback → Portfolio
-
-    Uso:
-        ai = TradingAI(symbol="AAPL")
-        ai.load()
-        ai.set_order_callback(portfolio.place_bracket_order)
-        market_data.set_bar_close_callback(ai.on_new_bar)
-    """
-
     WARMUP_BARS = 60      # Barras minimas antes de operar
 
     def __init__(
@@ -214,7 +193,7 @@ class TradingAI:
 
     def load(self) -> "TradingAI":
         """Carga el modelo PPO y el normalizador desde disco."""
-        model_path = MODELS_DIR / self.symbol / "best_model.zip"
+        model_path = MODELS_DIR / self.symbol / "best_model"
         norm_path  = MODELS_DIR / self.symbol / "vec_normalize.pkl"
 
         if not model_path.with_suffix(".zip").exists():
@@ -388,3 +367,22 @@ class TradingAI:
             "kb_chunks":     kb_chunks,
             "kb_veto_on":    self.kb_veto,
         }
+
+
+"""
+    Agente de trading autonomo basado en PPO + RiskManager + KnowledgeBase.
+
+    Flujo en vivo:
+        1. Recibe nueva barra via on_new_bar()
+        2. Calcula features con FeatureEngineer
+        3. Pide accion al modelo (PPO.predict)
+        4. Consulta KnowledgeBase con el contexto actual  ← NUEVO
+        5. Valida con RiskManager
+        6. Emite senal via callback → Portfolio
+
+    Uso:
+        ai = TradingAI(symbol="AAPL")
+        ai.load()
+        ai.set_order_callback(portfolio.place_bracket_order)
+        market_data.set_bar_close_callback(ai.on_new_bar)
+"""

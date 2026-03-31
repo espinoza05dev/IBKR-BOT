@@ -12,10 +12,7 @@ Ejecución:
 """
 
 import sys
-from pathlib import Path
-
 import pandas as pd
-
 from Data.historical.Datadownloader import DataManager
 from Data.historical.Datapipeline   import DataPipeline
 from backtest.Backtestengine     import BacktestEngine, WalkForwardEngine
@@ -31,20 +28,20 @@ SYMBOL          = "AAL"       # Símbolo del modelo a evaluar
 INTERVAL        = "1h"
 SOURCE          = "yfinance"
 START_TRAIN     = "2013-01-01"  # Inicio del dataset completo
-START_TEST      = "2014-01-01"  # Los datos de TEST deben ser POSTERIORES al entrenamiento
+START_TEST      = "2024-01-01"  # Los datos de TEST deben ser POSTERIORES al entrenamiento
 END_TEST        = None          # None = hasta hoy
 
 INITIAL_BALANCE = 10000.0
 COMMISSION      = 0.001        # 0.1% por operación
 
-MODE = "single"   # "single" | "walkforward" | "compare"
+MODE = "walkforward"   # "single" | "walkforward" | "compare"
 
 # Walk-forward (solo Modo walkforward)
 WF_N_WINDOWS          = 4
 WF_TIMESTEPS_WINDOW   = 10_000_000   # Steps por ventana (más rápido que entrenamiento completo)
 
 # Multi-símbolo (solo Modo compare)
-COMPARE_SYMBOLS = ["AAPL", "MSFT", "NVDA"]
+COMPARE_SYMBOLS = ["AAPL", "MSFT", "NVDA",""]
 
 OPEN_REPORT_IN_BROWSER = True   # Abrir HTML al terminar
 

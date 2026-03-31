@@ -3,7 +3,6 @@ FeatureEngineering.py
 Transforma datos OHLCV crudos en features tecnicas normalizadas
 listas para ser consumidas por el agente de RL y la estrategia IA_BackTests.
 """
-import numpy as np
 import pandas as pd
 import ta
 

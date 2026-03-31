@@ -1,13 +1,8 @@
 """
 download_data.py
 Script listo para ejecutar desde la terminal.
-
-Uso:
-    python Data/historical/download_data.py
 """
-from Data.historical.Datadownloader  import DataManager
 from Data.historical.Datapipeline   import DataPipeline
-
 
 def main():
     print("\n╔══════════════════════════════════════╗")
@@ -17,8 +12,8 @@ def main():
     # ── Configuración ─────────────────────────────────────────────────────────
     SYMBOLS  = ["AAL"]
     INTERVAL = "1h"                        # "1m" "5m" "15m" "1h" "1d"
-    START    = "2013-01-01"                # Fecha de inicio
-    SOURCE   = "yfinance"                  # "yfinance" | "ibkr" | "av" | "csv"
+    START    = "2010-01-01"                # Fecha de inicio
+    SOURCE   = "ibkr"                  # "yfinance" | "ibkr" | "av" | "csv"
 
     # ── Opción A: Pipeline completo (recomendado para entrenar) ───────────────
     pipeline = DataPipeline(source=SOURCE)

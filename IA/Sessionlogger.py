@@ -17,7 +17,8 @@ import threading
 from datetime import datetime
 from pathlib import Path
 
-SESSIONS_DIR = Path("LogsSession/sessions")
+#es la ruta que esta en IA/LosSession/sessions
+SESSIONS_DIR = Path("IA_BackTests/LogsSession/sessions")
 
 
 class SessionLogger:

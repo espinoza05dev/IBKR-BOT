@@ -14,8 +14,6 @@ Cambios vs versión anterior:
 import math
 from datetime import datetime
 from typing import Optional, Callable
-
-import numpy as np
 import pandas as pd
 import pytz
 import ta

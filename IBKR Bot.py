@@ -29,8 +29,6 @@ import sys
 import threading
 import time
 from datetime import datetime
-from pathlib import Path
-import pytz
 from ibapi.contract import Contract
 from core.BrockerConnection  import IBApi
 from core.Portfolio         import Portfolio

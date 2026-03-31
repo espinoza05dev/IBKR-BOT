@@ -1,11 +1,10 @@
+from __future__ import annotations
 """
 KnowledgeIngestor.py
 Orquestador principal de la KnowledgeBase.
 Detecta automaticamente el tipo de contenido y lo enruta
 al procesador correcto, luego almacena el texto en el VectorStore.
 """
-
-from __future__ import annotations
 
 import json
 import mimetypes

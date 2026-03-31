@@ -1,16 +1,12 @@
+from __future__ import annotations
 """
 Portfolio.py
 Gestiona la creación y envío de órdenes a Interactive Brokers.
 Soporte completo para bracket orders, market orders y fills.
 """
-
-from __future__ import annotations
-
 from typing import Optional, Callable
-
 from ibapi.contract import Contract
 from ibapi.order    import Order
-
 
 class Portfolio:
     """
