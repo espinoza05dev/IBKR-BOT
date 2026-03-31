@@ -1,13 +1,11 @@
+from __future__ import annotations
 """
 BrokerConecction.py
 Capa de conexión con Interactive Brokers TWS / IB Gateway.
 Usa callbacks para desacoplar completamente la lógica del bot.
 """
 
-from __future__ import annotations
-
 from typing import Optional, Callable
-
 from ibapi.client  import EClient
 from ibapi.wrapper import EWrapper
 

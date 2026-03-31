@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Optional
 import pandas as pd
 
-DATA_DIR = Path(f"/IA/Data/historical")
+DATA_DIR = Path(f"C:\\Users\\artur\\Programming\\PycharmProjects\\IBKR_AI_BOT\\Data\\raw")
 
 
 # ══════════════════════════════════════════════════════════════════════════════

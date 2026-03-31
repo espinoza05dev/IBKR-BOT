@@ -16,7 +16,7 @@ from datetime import datetime
 from typing import Optional, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from Sessionlogger import SessionLogger
+    from src.utils.Sessionlogger import SessionLogger
 
 
 @dataclass

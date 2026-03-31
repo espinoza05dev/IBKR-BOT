@@ -1,4 +1,7 @@
 from __future__ import annotations
+
+from src.risk.RiskManager import RiskConfig
+
 """
 IBKR Bot.py - Punto de entrada del autotrader.
 Orquesta la conexion, datos de mercado, estrategia y portfolio.
@@ -34,44 +37,19 @@ from core.BrockerConnection  import IBApi
 from core.Portfolio         import Portfolio
 from Data.providers.RealTime_Market_Data import MarketDataHandler, Bar
 from src.brain.TradingAI import TradingAI
-from src.risk.RiskManager import RiskConfig
 from src.utils.Sessionlogger import SessionLogger
 from core.Papertradingmonitor import PaperTradingMonitor
-
-
-# ══════════════════════════════════════════════════════════════════════════════
-#  CONFIGURACIÓN — edita solo esta sección
-# ══════════════════════════════════════════════════════════════════════════════
-
-SYMBOL       = "AAL"    # Símbolo a operar, la IA_BackTests debe de haber sido entrenada con el simbolo antes de ejecutal el BOT
-INTERVAL_MIN = 60        # Tamaño de vela en minutos (ej: 60 = velas de 1h)
-INITIAL_CASH = 10_000.0  # Capital inicial (informativo para el monitor)
-
-# ── Conexión IB ───────────────────────────────────────────────────────────────
-PAPER_MODE = True        # True = Paper Trading | False = LIVE (dinero real)
-
-TWS_HOST   = "127.0.0.1"
-TWS_PORT   = 7497        # Paper: 7497 (TWS) / 4002 (Gateway)
-                         # Live:  7496 (TWS) / 4001 (Gateway)
-CLIENT_ID  = 1           # ID único de cliente (cambia si hay varias conexiones)
-
-# ── IA_BackTests / Riesgo ───────────────────────────────────────────────────────────────
-WARMUP_BARS          = 80    # Barras históricas antes de operar
-CONFIDENCE_THRESHOLD = 0.60  # Confianza mínima del modelo para actuar
+from config import settings as IBKR_SETTINGS
 
 RISK = RiskConfig(
-    max_position_pct   = 0.10,   # Max 10% del capital por trade
-    max_daily_loss_pct = 0.03,   # Detener si pierde 3% en el día
-    max_drawdown_pct   = 0.15,   # Detener si drawdown supera 15%
-    max_trades_per_day = 10,     # Máximo de operaciones diarias
-    min_confidence     = CONFIDENCE_THRESHOLD,
-    atr_multiplier     = 2.0,    # Stop loss = entrada - ATR × 2
+    max_position_pct   = IBKR_SETTINGS.max_position_pct,   # Max 10% del capital por trade
+    max_daily_loss_pct = IBKR_SETTINGS.max_position_pct,   # Detener si pierde 3% en el día
+    max_drawdown_pct   = IBKR_SETTINGS.max_position_pct,   # Detener si drawdown supera 15%
+    max_trades_per_day = IBKR_SETTINGS.max_position_pct,     # Máximo de operaciones diarias
+    min_confidence     = IBKR_SETTINGS.CONFIDENCE_THRESHOLD,
+    atr_multiplier     = IBKR_SETTINGS.max_position_pct,    # Stop loss = entrada - ATR × 2
 )
 
-# ── Datos históricos (warmup) ─────────────────────────────────────────────────
-HISTORY_DURATION = "5 D"  # Cuánto historial pedir para calentar la IA_BackTests
-                           # "1 D" | "5 D" | "1 M" | "6 M" | "1 Y"
-# ══════════════════════════════════════════════════════════════════════════════
 class AITradingBot:
     """
     Bot de trading con IA_BackTests integrada.
@@ -90,24 +68,24 @@ class AITradingBot:
         self._order_id  = 1
         self._lock      = threading.Lock()
 
-        mode_str = "📄 PAPER TRADING" if PAPER_MODE else "💰 LIVE TRADING"
+        mode_str = "📄 PAPER TRADING" if IBKR_SETTINGS.PAPER_MODE else "💰 LIVE TRADING"
         print(f"\n{'═'*55}")
         print(f"  AutoTrader IA_BackTests  |  {mode_str}")
-        print(f"  Símbolo: {SYMBOL}  |  Velas: {INTERVAL_MIN} min")
-        print(f"  Host: {TWS_HOST}:{TWS_PORT}  |  ClientID: {CLIENT_ID}")
+        print(f"  Símbolo: {IBKR_SETTINGS.SYMBOL}  |  Velas: {IBKR_SETTINGS.INTERVAL_MIN} min")
+        print(f"  Host: {IBKR_SETTINGS.TWS_HOST}:{IBKR_SETTINGS.TWS_PORT}  |  ClientID: {IBKR_SETTINGS.CLIENT_ID}")
         print(f"{'═'*55}\n")
 
-        if not PAPER_MODE:
+        if not IBKR_SETTINGS.PAPER_MODE:
             self._confirm_live_mode()
 
         # ── 1. Logger (primero, para registrar todo) ──────────────────────────
-        self.logger  = SessionLogger(symbol=SYMBOL, paper=PAPER_MODE)
+        self.logger  = SessionLogger(symbol=IBKR_SETTINGS.SYMBOL, paper=IBKR_SETTINGS.PAPER_MODE)
 
         # ── 2. Monitor de P&L ────────────────────────────────────────────────
         self.monitor = PaperTradingMonitor(
-            symbol          = SYMBOL,
-            initial_cash    = INITIAL_CASH,
-            paper_mode      = PAPER_MODE,
+            symbol          = IBKR_SETTINGS.SYMBOL,
+            initial_cash    = IBKR_SETTINGS.INITIAL_CASH,
+            paper_mode      = IBKR_SETTINGS.PAPER_MODE,
             logger          = self.logger,
         )
 
@@ -117,8 +95,8 @@ class AITradingBot:
             on_bar_update    = self._on_bar_update,
             on_next_order_id = self._set_order_id,
         )
-        print(f"[Bot] Conectando a TWS en {TWS_HOST}:{TWS_PORT}...")
-        self.ib.connect(TWS_HOST, TWS_PORT, CLIENT_ID)
+        print(f"[Bot] Conectando a TWS en {IBKR_SETTINGS.TWS_HOST}:{IBKR_SETTINGS.TWS_PORT}...")
+        self.ib.connect(IBKR_SETTINGS.TWS_HOST, IBKR_SETTINGS.TWS_PORT, IBKR_SETTINGS.CLIENT_ID)
 
         ib_thread = threading.Thread(target=self.ib.run, daemon=True)
         ib_thread.start()
@@ -128,20 +106,20 @@ class AITradingBot:
             raise ConnectionError(
                 "No se pudo conectar a TWS/IB Gateway.\n"
                 "Verifica que TWS esté abierto y la API esté habilitada.\n"
-                f"Puerto configurado: {TWS_PORT}"
+                f"Puerto configurado: {IBKR_SETTINGS.TWS_PORT}"
             )
         print(f"[Bot] ✓ Conectado a IB  (order_id={self._order_id})")
 
         # ── 4. Portfolio ──────────────────────────────────────────────────────
-        self.portfolio = Portfolio(ib=self.ib, symbol=SYMBOL)
+        self.portfolio = Portfolio(ib=self.ib, symbol=IBKR_SETTINGS.SYMBOL)
         self.portfolio.set_fill_callback(self.monitor.on_fill)   # Notificar fills
 
         # ── 5. TradingAI ──────────────────────────────────────────────────────
-        print(f"[Bot] Cargando modelo IA_BackTests para {SYMBOL}...")
+        print(f"[Bot] Cargando modelo IA_BackTests para {IBKR_SETTINGS.SYMBOL}...")
         self.ai = TradingAI(
-            symbol               = SYMBOL,
-            risk_config          = RISK,
-            confidence_threshold = CONFIDENCE_THRESHOLD,
+            symbol               = IBKR_SETTINGS.SYMBOL,
+            risk_config          = IBKR_SETTINGS.RISK,
+            confidence_threshold = IBKR_SETTINGS.CONFIDENCE_THRESHOLD,
         )
         self.ai.load()
         self.ai.set_order_callback(self._execute_ai_order)
@@ -149,7 +127,7 @@ class AITradingBot:
 
         # ── 6. MarketDataHandler (envuelve barras IB y alimenta a la IA_BackTests) ──────
         self.market_data = MarketDataHandler(
-            barsize  = INTERVAL_MIN,
+            barsize  = IBKR_SETTINGS.INTERVAL_MIN,
             strategy = None,      # Sin SMAStrategy — la IA_BackTests toma las decisiones
         )
         self.market_data.set_bar_close_callback(self._on_bar_closed)
@@ -160,15 +138,15 @@ class AITradingBot:
 
         self._running = True
         self.logger.log_event("BOT_START", {
-            "symbol": SYMBOL, "interval": INTERVAL_MIN,
-            "paper": PAPER_MODE, "port": TWS_PORT,
+            "symbol": IBKR_SETTINGS.SYMBOL, "interval": IBKR_SETTINGS.INTERVAL_MIN,
+            "paper": IBKR_SETTINGS.PAPER_MODE, "port": IBKR_SETTINGS.TWS_PORT,
         })
 
         # ── 8. Señal de apagado limpio ────────────────────────────────────────
         signal.signal(signal.SIGINT,  self._shutdown)
         signal.signal(signal.SIGTERM, self._shutdown)
 
-        print(f"\n[Bot] ✓ Sistema iniciado — esperando barras ({WARMUP_BARS} para calentamiento)")
+        print(f"\n[Bot] ✓ Sistema iniciado — esperando barras ({IBKR_SETTINGS.WARMUP_BARS} para calentamiento)")
         print(f"[Bot] Presiona Ctrl+C para cerrar limpiamente\n")
 
         # Mantener el proceso vivo
@@ -181,20 +159,20 @@ class AITradingBot:
     def _request_data(self):
         """Pide historial (warmup) + suscripción a barras en tiempo real."""
         contract = self._make_contract()
-        min_text = " mins" if INTERVAL_MIN > 1 else " min"
+        min_text = " mins" if IBKR_SETTINGS.INTERVAL_MIN > 1 else " min"
         self.ib.reqHistoricalData(
             reqId          = 0,
             contract       = contract,
             endDateTime    = "",
-            durationStr    = HISTORY_DURATION,
-            barSizeSetting = f"{INTERVAL_MIN}{min_text}",
+            durationStr    = IBKR_SETTINGS.HISTORY_DURATION,
+            barSizeSetting = f"{IBKR_SETTINGS.INTERVAL_MIN}{min_text}",
             whatToShow     = "TRADES",
             useRTH         = 1,
             formatDate     = 1,
             keepUpToDate   = True,   # ← Continúa con barras en tiempo real
             chartOptions   = [],
         )
-        print(f"[Bot] Solicitando {HISTORY_DURATION} de historial + streaming en tiempo real...")
+        print(f"[Bot] Solicitando {IBKR_SETTINGS.HISTORY_DURATION} de historial + streaming en tiempo real...")
 
     def _on_bar_update(self, reqId, bar, realtime: bool):
         """Callback de IBApi. Redirige al MarketDataHandler."""
@@ -244,7 +222,7 @@ class AITradingBot:
                 f"  Precio actual: ${price:.2f}\n"
                 f"  Take Profit  : ${profit_target:.2f}\n"
                 f"  Stop Loss    : ${stop_loss:.2f}\n"
-                f"  Modo         : {'PAPER' if PAPER_MODE else 'LIVE'}"
+                f"  Modo         : {'PAPER' if IBKR_SETTINGS.PAPER_MODE else 'LIVE'}"
             )
 
             if action == "BUY":
@@ -289,7 +267,7 @@ class AITradingBot:
 
     def _make_contract(self) -> Contract:
         c          = Contract()
-        c.symbol   = SYMBOL
+        c.symbol   = IBKR_SETTINGS.SYMBOL
         c.secType  = "STK"
         c.exchange = "SMART"
         c.currency = "USD"
