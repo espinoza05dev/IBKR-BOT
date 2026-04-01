@@ -7,68 +7,22 @@ import pandas as pd
 from Data.historical.Datadownloader import DataManager
 from Data.historical.Datapipeline import DataPipeline
 from src.brain.ModelTrainer import ModelTrainer, PPOConfig
+from config import settings as IBKR_SETTINGS
 
-# ╔═══════════════════════════════════════════════════════════╗
-# ║              CONFIGURACIÓN — edita solo aquí              ║
-# ╚═══════════════════════════════════════════════════════════╝
-
-SYMBOL      = "AAL"       # Símbolo a entrenar
-INTERVAL    = "1h"         # Timeframe: "1m" "5m" "15m" "1h" "1d"
-START       = "2013-01-01" # Inicio del histórico
-SOURCE      = "yfinance"   # "yfinance" | "ibkr" | "av"
-
-# ── GPU / paralelismo ──────────────────────────────────────────────────────
-GPU_DEVICE  = "cuda"   # "auto" detecta CUDA→MPS→CPU automáticamente
-                       # "cuda" fuerza NVIDIA GPU
-                       # "mps"  fuerza Apple Silicon
-                       # "cpu"  fuerza CPU (útil para debug)
-
-N_ENVS      = 16        # 0 = auto según hardware
-                       # GPU  RTX 30/40: usa 8
-                       # Apple M-series: usa 4
-                       # Solo CPU      : usa cantidad de núcleos
-
-# ── Timesteps ─────────────────────────────────────────────────────────────
-# CPU 500_000  ≈ 40 min   →   GPU 2_000_000  ≈ 15 min  (mismo resultado)
-TIMESTEPS   = 1_000_000 #pasos totales que hara la IA
-# TIMESTEPS = 500_000    # Si usas solo CPU
-
-EVAL_FREQ       = 50_000  # Evaluar cada N pasos
-N_EVAL_EPISODES = 15
-EVAL_SPLIT      = 0.20    # 20% reservado para evaluación
-
-MODE = "B"   # "A" | "B" | "C" | "D"
-"""
-    Modos:
-    A → Pipeline completo (descarga + features + entrena)  ← primer uso
-    B → Datos ya en disco
-    C → Reanudar desde checkpoint
-    D → Optimización de hiperparámetros (Optuna)
-"""
-# ── Config manual (opcional — None = auto según GPU/CPU) ──────────────────
-# CUSTOM_CONFIG = None
 CUSTOM_CONFIG = PPOConfig(
-    policy="MlpPolicy",
-    n_steps       = 8192,
-    batch_size    = 8192,
-    n_epochs      = 10,
-    learning_rate = 2.5e-4,
+    policy=IBKR_SETTINGS.policy,
+    n_steps       = IBKR_SETTINGS.n_steps,
+    batch_size    = IBKR_SETTINGS.batch_size,
+    n_epochs      = IBKR_SETTINGS.n_epochs,
+    learning_rate = IBKR_SETTINGS.learning_rate,
 )
-
-# Optuna (solo Modo D)
-OPTUNA_TRIALS      = 50 #cantidad de entrenamiento, cada uno es diferente
-OPTUNA_STEPS_TRIAL = 2_000_000 #cantidad de pasos que dara en cada entrenamiento
-
-
-# ══════════════════════════════════════════════════════════════════════════════
-
 
 def make_trainer(features_ready: bool = False) -> ModelTrainer:
     return ModelTrainer(
-        symbol         = SYMBOL,
+        symbol         = IBKR_SETTINGS.SYMBOL,
         config         = CUSTOM_CONFIG,
-        device         = GPU_DEVICE,
-        n_envs         = N_ENVS,
+        device         = IBKR_SETTINGS.GPU_DEVICE,
+        n_envs         = IBKR_SETTINGS.N_ENVS,
         features_ready = features_ready,
     )
 
@@ -76,33 +30,33 @@ def make_trainer(features_ready: bool = False) -> ModelTrainer:
 def modo_a():
     """Pipeline completo en un solo flujo."""
     print("\n▶  Modo A — Pipeline completo")
-    pipeline         = DataPipeline(source=SOURCE)
-    train_df, test_df = pipeline.run(SYMBOL, INTERVAL, START)
+    pipeline         = DataPipeline(source=IBKR_SETTINGS.SOURCE)
+    train_df, test_df = pipeline.run(IBKR_SETTINGS.SYMBOL, IBKR_SETTINGS.INTERVAL, IBKR_SETTINGS.START)
 
     trainer = make_trainer(features_ready=True)
-    trainer.train(train_df, TIMESTEPS, EVAL_FREQ, N_EVAL_EPISODES, eval_split=0.0)
+    trainer.train(train_df, IBKR_SETTINGS.TIMESTEPS, IBKR_SETTINGS.EVAL_FREQ, IBKR_SETTINGS.N_EVAL_EPISODES, eval_split=0.0)
     return trainer, trainer.evaluate(test_df, episodes=10)
 
 
 def modo_b():
     """Datos ya descargados en disco."""
     print("\n▶  Modo B — Datos desde disco")
-    train_path = Path(f"IA/Data/historical/{SYMBOL}/{SYMBOL}_{INTERVAL}_train.csv")
-    test_path  = Path(f"IA/Data/historical/{SYMBOL}/{SYMBOL}_{INTERVAL}_test.csv")
+    train_path = Path(f"raw/{IBKR_SETTINGS.SYMBOL}/{IBKR_SETTINGS.SYMBOL}_{IBKR_SETTINGS.INTERVAL}_train.csv")
+    test_path  = Path(f"raw/{IBKR_SETTINGS.SYMBOL}/{IBKR_SETTINGS.SYMBOL}_{IBKR_SETTINGS.INTERVAL}_test.csv")
 
     if train_path.exists():
         train_df       = pd.read_csv(train_path, index_col=0, parse_dates=True)
         test_df        = pd.read_csv(test_path,  index_col=0, parse_dates=True)
         features_ready = "close_norm" in train_df.columns
     else:
-        df             = DataManager().load(SYMBOL, INTERVAL)
+        df             = DataManager().load(IBKR_SETTINGS.SYMBOL, IBKR_SETTINGS.INTERVAL)
         split          = int(len(df) * 0.8)
         train_df, test_df = df.iloc[:split], df.iloc[split:]
         features_ready = False
 
     trainer = make_trainer(features_ready=features_ready)
-    trainer.train(train_df, TIMESTEPS, EVAL_FREQ, N_EVAL_EPISODES,
-                  eval_split=EVAL_SPLIT if not features_ready else 0.0)
+    trainer.train(train_df, IBKR_SETTINGS.TIMESTEPS, IBKR_SETTINGS.EVAL_FREQ, IBKR_SETTINGS.N_EVAL_EPISODES,
+                  eval_split=IBKR_SETTINGS.EVAL_SPLIT if not features_ready else 0.0)
     return trainer, trainer.evaluate(test_df, episodes=10)
 
 
@@ -111,35 +65,35 @@ def modo_c():
     print("\n▶  Modo C — Reanudar desde checkpoint")
     dm = DataManager()
     try:
-        df = dm.load(SYMBOL, INTERVAL)
+        df = dm.load(IBKR_SETTINGS.SYMBOL, IBKR_SETTINGS.INTERVAL)
     except FileNotFoundError:
-        df = dm.download(SYMBOL, INTERVAL, START, source=SOURCE)
+        df = dm.download(IBKR_SETTINGS.SYMBOL, IBKR_SETTINGS.INTERVAL, IBKR_SETTINGS.START, source=IBKR_SETTINGS.SOURCE)
 
     split    = int(len(df) * 0.8)
     train_df = df.iloc[:split]
     test_df  = df.iloc[split:]
 
     trainer = make_trainer()
-    trainer.train(train_df, TIMESTEPS, EVAL_FREQ, N_EVAL_EPISODES, resume=True)
+    trainer.train(train_df, IBKR_SETTINGS.TIMESTEPS, IBKR_SETTINGS.EVAL_FREQ, IBKR_SETTINGS.N_EVAL_EPISODES, resume=True)
     return trainer, trainer.evaluate(test_df, episodes=10)
 
 
 def modo_d():
     """Optimización de hiperparámetros con Optuna."""
-    print(f"\n▶  Modo D — Optuna  ({OPTUNA_TRIALS} trials × {OPTUNA_STEPS_TRIAL:,} steps)")
-    pipeline          = DataPipeline(source=SOURCE)
-    train_df, test_df = pipeline.run(SYMBOL, INTERVAL, START)
+    print(f"\n▶  Modo D — Optuna  ({IBKR_SETTINGS.OPTUNA_TRIALS} trials × {IBKR_SETTINGS.OPTUNA_STEPS_TRIAL:,} steps)")
+    pipeline          = DataPipeline(source=IBKR_SETTINGS.SOURCE)
+    train_df, test_df = pipeline.run(IBKR_SETTINGS.SYMBOL, IBKR_SETTINGS.INTERVAL, IBKR_SETTINGS.START)
 
     trainer     = make_trainer(features_ready=True)
     best_config = trainer.optimize_hyperparams(
-        train_df, n_trials=OPTUNA_TRIALS, n_steps_per_trial=OPTUNA_STEPS_TRIAL
+        train_df, n_trials=IBKR_SETTINGS.OPTUNA_TRIALS, n_steps_per_trial=IBKR_SETTINGS.OPTUNA_STEPS_TRIAL
     )
 
     trainer2 = ModelTrainer(
-        symbol=SYMBOL, config=best_config,
-        device=GPU_DEVICE, n_envs=N_ENVS, features_ready=True
+        symbol=IBKR_SETTINGS.SYMBOL, config=best_config,
+        device=IBKR_SETTINGS.GPU_DEVICE, n_envs=IBKR_SETTINGS.N_ENVS, features_ready=True
     )
-    trainer2.train(train_df, TIMESTEPS, EVAL_FREQ, eval_split=0.0)
+    trainer2.train(train_df, IBKR_SETTINGS.TIMESTEPS, IBKR_SETTINGS.EVAL_FREQ, eval_split=0.0)
     return trainer2, trainer2.evaluate(test_df, episodes=10)
 
 
@@ -147,10 +101,10 @@ def print_header():
     print("\n╔═══════════════════════════════════════════════╗")
     print("║      Model Trainer — AutoTrader IA_BackTests  🚀        ║")
     print("╚═══════════════════════════════════════════════╝")
-    print(f"  Símbolo  : {SYMBOL}  |  {INTERVAL}")
-    print(f"  Steps    : {TIMESTEPS:,}")
-    print(f"  Device   : {GPU_DEVICE}  |  Envs: {N_ENVS if N_ENVS else 'auto'}")
-    print(f"  Modo     : {MODE}")
+    print(f"  Símbolo  : {IBKR_SETTINGS.SYMBOL}  |  {IBKR_SETTINGS.INTERVAL}")
+    print(f"  Steps    : {IBKR_SETTINGS.TIMESTEPS:,}")
+    print(f"  Device   : {IBKR_SETTINGS.GPU_DEVICE}  |  Envs: {IBKR_SETTINGS.N_ENVS if IBKR_SETTINGS.N_ENVS else 'auto'}")
+    print(f"  Modo     : {IBKR_SETTINGS.MODE}")
 
 
 def print_summary(m: dict):
@@ -182,9 +136,9 @@ if __name__ == "__main__":
     print_header()
 
     modos = {"A": modo_a, "B": modo_b, "C": modo_c, "D": modo_d}
-    if MODE not in modos:
-        print(f"ERROR: MODE='{MODE}' no válido. Usa A/B/C/D.")
+    if IBKR_SETTINGS.MODE not in modos:
+        print(f"ERROR: MODE='{IBKR_SETTINGS.MODE}' no válido. Usa A/B/C/D.")
         sys.exit(1)
 
-    trainer, metrics = modos[MODE]()
+    trainer, metrics = modos[IBKR_SETTINGS.MODE]()
     print_summary(metrics)

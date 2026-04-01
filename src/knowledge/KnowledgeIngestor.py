@@ -1,6 +1,5 @@
 from __future__ import annotations
 """
-KnowledgeIngestor.py
 Orquestador principal de la KnowledgeBase.
 Detecta automaticamente el tipo de contenido y lo enruta
 al procesador correcto, luego almacena el texto en el VectorStore.
@@ -11,7 +10,7 @@ import mimetypes
 from datetime import datetime
 from pathlib import Path
 from typing import Union
-
+from config import settings as IBKR_SETTINGS
 
 class KnowledgeIngestor:
     """
@@ -159,7 +158,7 @@ class KnowledgeIngestor:
             "log_entries":  len(self._log),
         }
 
-    def export_log(self, path: str = "IA_BackTestsKnowledgeBase/ingestion_log.json"):
+    def export_log(self, path: str = f"{IBKR_SETTINGS.INGESTION_DIR}/ingestion_log.json"):
         Path(path).parent.mkdir(parents=True, exist_ok=True)
         with open(path, "w") as f:
             json.dump(self._log, f, indent=2, ensure_ascii=False)

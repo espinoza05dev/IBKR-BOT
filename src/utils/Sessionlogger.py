@@ -15,10 +15,7 @@ Guarda en: IA_BackTests/logs/sessions/AAPL_paper_20240315_143022.jsonl
 import json
 import threading
 from datetime import datetime
-from pathlib import Path
-
-#es la ruta que esta en IA/LosSession/sessions
-SESSIONS_DIR = Path("../../IA/IA_BackTests/LogsSession/sessions")
+from config import settings as IBKR_SETTINGS
 
 
 class SessionLogger:
@@ -41,11 +38,11 @@ class SessionLogger:
         self._lock     = threading.Lock()
         self._start_ts = datetime.now()
 
-        SESSIONS_DIR.mkdir(parents=True, exist_ok=True)
+        IBKR_SETTINGS.SESSIONS_DIR.mkdir(parents=True, exist_ok=True)
 
         mode   = "paper" if paper else "live"
         ts     = self._start_ts.strftime("%Y%m%d_%H%M%S")
-        self._path = SESSIONS_DIR / f"{self.symbol}_{mode}_{ts}.jsonl"
+        self._path = IBKR_SETTINGS.SESSIONS_DIR / f"{self.symbol}_{mode}_{ts}.jsonl"
 
         self.log_event("SESSION_START", {
             "symbol":    self.symbol,

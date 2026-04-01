@@ -10,16 +10,13 @@ Descarga y normaliza datos OHLCV históricos desde múltiples fuentes:
 Salida unificada: DataFrame con columnas → open, high, low, close, volume
 guardado en Data/historical/<SYMBOL>/<SYMBOL>_<interval>.csv
 """
-
 import time
 import threading
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Optional
 import pandas as pd
-
-DATA_DIR = Path(f"C:\\Users\\artur\\Programming\\PycharmProjects\\IBKR_AI_BOT\\Data\\raw")
-
+from config import settings as IBKR_SETTINGS
 
 # ══════════════════════════════════════════════════════════════════════════════
 # Clase base
@@ -104,7 +101,7 @@ class OHLCVDownloader:
         return df
 
     def _save(self, df: pd.DataFrame, symbol: str, interval: str) -> Path:
-        folder = DATA_DIR / symbol.upper()
+        folder = IBKR_SETTINGS.RAW_DATA_DIR / symbol.upper()
         folder.mkdir(parents=True, exist_ok=True)
         path = folder / f"{symbol.upper()}_{interval}.csv"
         df.to_csv(path)
@@ -526,7 +523,7 @@ class DataManager:
 
     def load(self, symbol: str, interval: str = "1h") -> pd.DataFrame:
         """Carga datos desde disco sin descargar."""
-        path = DATA_DIR / symbol.upper() / f"{symbol.upper()}_{interval}.csv"
+        path = IBKR_SETTINGS.RAW_DATA_DIR / symbol.upper() / f"{symbol.upper()}_{interval}.csv"
         if not path.exists():
             raise FileNotFoundError(
                 f"No hay datos en disco para {symbol} {interval}.\n"
@@ -604,7 +601,7 @@ class DataManager:
 
     @staticmethod
     def _load_cache(symbol: str, interval: str) -> Optional[pd.DataFrame]:
-        path = DATA_DIR / symbol.upper() / f"{symbol.upper()}_{interval}.csv"
+        path = IBKR_SETTINGS.RAW_DATA_DIR / symbol.upper() / f"{symbol.upper()}_{interval}.csv"
         if not path.exists():
             return None
         age_hours = (time.time() - path.stat().st_mtime) / 3600

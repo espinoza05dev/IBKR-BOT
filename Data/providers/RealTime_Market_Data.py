@@ -17,7 +17,6 @@ from typing import Optional, Callable
 import pandas as pd
 import pytz
 import ta
-
 from core.Strategy import SMAStrategy
 
 

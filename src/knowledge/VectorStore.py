@@ -1,20 +1,15 @@
+from __future__ import annotations
 """
-VectorStore.py
 Almacen de vectores para la KnowledgeBase.
 Guarda embeddings de texto usando sentence-transformers + ChromaDB.
 Permite busqueda semantica para enriquecer las decisiones del agente.
 """
-
-from __future__ import annotations
-
 import hashlib
 import logging
-import os
 import warnings
 from datetime import datetime
-from pathlib import Path
+from config import settings as IBKR_SETTINGS
 from typing import Optional
-
 import chromadb
 from chromadb.config import Settings
 from sentence_transformers import SentenceTransformer
@@ -29,11 +24,7 @@ warnings.filterwarnings(
     category=UserWarning,
 )
 logging.getLogger("transformers.modeling_utils").setLevel(logging.ERROR)
-
-
-DB_PATH    = Path("../../IA/KnowledgeBase/db")
 MODEL_NAME = "all-MiniLM-L6-v2"    # Ligero y rapido, 384 dims
-
 
 class VectorStore:
     """
@@ -47,10 +38,8 @@ class VectorStore:
     """
 
     def __init__(self, collection: str = "trading_knowledge"):
-        DB_PATH.mkdir(parents=True, exist_ok=True)
-
         self._client = chromadb.PersistentClient(
-            path=str(DB_PATH),
+            path=str(IBKR_SETTINGS.DB_DIR),
             settings=Settings(anonymized_telemetry=False),
         )
         self._collection = self._client.get_or_create_collection(

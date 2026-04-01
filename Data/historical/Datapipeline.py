@@ -8,11 +8,11 @@ Uso:
     pipeline = DataPipeline()
     train_df, test_df = pipeline.run("AAPL", interval="1h", start="2021-01-01")
 """
-from pathlib import Path
 import pandas as pd
 
 from Data.historical.Datadownloader import DataManager
 from src.brain.FeatureEngineering import FeatureEngineer
+from config import settings as IBKR_SETTINGS
 
 
 class DataPipeline:
@@ -100,12 +100,10 @@ class DataPipeline:
 
     @staticmethod
     def _save_splits(train: pd.DataFrame, test: pd.DataFrame, symbol: str, interval: str):
-        folder = Path(f"/Data/historical") / symbol.upper()
+        folder = IBKR_SETTINGS.RAW_DATA_DIR / symbol.upper()
         folder.mkdir(parents=True, exist_ok=True)
         train.to_csv(folder / f"{symbol.upper()}_{interval}_train.csv")
         test.to_csv(folder  / f"{symbol.upper()}_{interval}_test.csv")
         print(f"[Pipeline] Splits guardados en {folder}/")
-#
+
 # if __name__ == "__main__":
-#     pipeline = DataPipeline()
-#     train_df, test_df = pipeline.run("MSFT", interval="1h", start="2014-01-01")

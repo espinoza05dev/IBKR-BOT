@@ -8,7 +8,6 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Optional
 
-
 @dataclass
 class RiskConfig:
     max_position_pct:   float = 0.10   # Max 10% del capital por trade

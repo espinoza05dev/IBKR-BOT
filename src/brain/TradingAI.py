@@ -1,3 +1,4 @@
+from __future__ import annotations
 """
 TradingAI.py
 Cerebro autonomo del bot: carga el modelo entrenado, recibe barras en vivo,
@@ -11,23 +12,16 @@ de los libros, audios y videos que ya has ingresado. El contexto puede:
     2. AJUSTAR el umbral de confianza segun el contexto de mercado
     3. REGISTRAR el contexto que influyó en cada decision para auditoria
 """
-
-from __future__ import annotations
-
 import threading
-from pathlib import Path
 from typing import Optional
-
 import numpy as np
 import pandas as pd
 from stable_baselines3 import PPO
 from stable_baselines3.common.vec_env import DummyVecEnv, VecNormalize
-
 from src.brain.FeatureEngineering import FeatureEngineer
 from src.risk.RiskManager import RiskManager, RiskConfig
 from src.brain.TradingEnvironment import TradingEnvironment
-
-MODELS_DIR = Path("../../IA/models/")
+from config import settings as IBKR_SETTINGS
 
 
 class KnowledgeFilter:
@@ -64,7 +58,7 @@ class KnowledgeFilter:
         if self._available is not None:
             return self._available
         try:
-            from KnowledgeBase.VectorStore import VectorStore
+            from src.knowledge.VectorStore import VectorStore
             self._store     = VectorStore(collection=self.collection)
             self._available = self._store.count() > 0
             if self._available:
@@ -193,8 +187,8 @@ class TradingAI:
 
     def load(self) -> "TradingAI":
         """Carga el modelo PPO y el normalizador desde disco."""
-        model_path = MODELS_DIR / self.symbol / "best_model"
-        norm_path  = MODELS_DIR / self.symbol / "vec_normalize.pkl"
+        model_path = IBKR_SETTINGS.MODELS_DIR / self.symbol / "best_model"
+        norm_path  = IBKR_SETTINGS.MODELS_DIR / self.symbol / "vec_normalize.pkl"
 
         if not model_path.with_suffix(".zip").exists():
             raise FileNotFoundError(

@@ -1,4 +1,18 @@
 from __future__ import annotations
+import json
+import random
+import shutil
+import sys
+import time
+import traceback
+from datetime import datetime
+from pathlib import Path
+import pandas as pd
+from Data.historical.Datadownloader import DataManager
+from src.brain.ModelTrainer import ModelTrainer, PPOConfig, detect_device
+from Check_Tests.backtest.Backtestengine  import BacktestEngine
+from Check_Tests.backtest.Backtestmetrics import BacktestMetrics
+from config import settings as IBKR_SETTINGS
 """
 model_factory.py
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -22,89 +36,50 @@ Al final genera:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 CONFIGURACIÓN — edita solo esta sección
 """
-# ╔════════════════════════════════════════════════════════╗
-# ║  CONFIGURA AQUÍ ANTES DE EJECUTAR                      ║
-# ╚════════════════════════════════════════════════════════╝
-
-SYMBOL          = "AAPL"         # Símbolo objetivo
-INTERVAL        = "1h"          # "1h" | "1d" | "30m"
-SOURCE          = "yfinance"
-
-START_TRAIN     = "2013-01-01"  # Inicio del historial de entrenamiento
-START_TEST      = "2023-06-01"  # Los datos de test NUNCA se ven durante entrenamiento
-END_TEST        = None          # None = hasta hoy
-
-INITIAL_BALANCE = 10_000.0
-COMMISSION      = 0.001         # 0.1% por operación (IBKR)
-
-# ── Metas ────────────────────────────────────────────────
-TARGET_APPROVED = 20            # Cuántos modelos aptos quiero
-MAX_ATTEMPTS    = 200           # Intentos máximos antes de rendirse
-STOP_ON_TARGET  = True          # True = parar al llegar al objetivo
-                                # False = seguir hasta MAX_ATTEMPTS
-
-# ── Entrenamiento ────────────────────────────────────────
-TIMESTEPS_PER_MODEL = 2_000_000 # Steps por intento (recomendado ≥ 1.5M)
-                                 # GPU ~15min | CPU ~60min por modelo
 
 # ── Criterios de aprobación ──────────────────────────────
 # Ajusta según la volatilidad del símbolo:
 #   Símbolos volátiles (AAL, AMC, GME): sé más permisivo
 #   Símbolos estables (AAPL, MSFT, SPY): puedes ser más exigente
 APPROVAL = {
-    "win_rate":        0.48,   # ≥ 48%  (baja de 50% para acciones volátiles)
-    "sharpe_ratio":    0.35,   # ≥ 0.35 (Sharpe de mercado ~ 0.4-0.6)
-    "sortino_ratio":   0.50,   # ≥ 0.50
-    "max_drawdown_pct": 25.0,  # ≤ 25%  (AAL puede caer fuerte)
-    "profit_factor":   1.10,   # ≥ 1.10 (cada $1 perdido se ganan $1.10)
-    "alpha_pct":       -5.0,   # ≥ -5%  (permisivo: que no sea catastrófico)
-    "n_trades":        8,      # ≥ 8 trades para tener muestra estadística
+    "win_rate":        IBKR_SETTINGS.win_rate,   # ≥ 48%  (baja de 50% para acciones volátiles)
+    "sharpe_ratio":    IBKR_SETTINGS.sharpe_ratio,   # ≥ 0.35 (Sharpe de mercado ~ 0.4-0.6)
+    "sortino_ratio":   IBKR_SETTINGS.sortino_ratio,   # ≥ 0.50
+    "max_drawdown_pct": IBKR_SETTINGS.max_drawdown_pct,  # ≤ 25%  (AAL puede caer fuerte)
+    "profit_factor":   IBKR_SETTINGS.profit_factor,   # ≥ 1.10 (cada $1 perdido se ganan $1.10)
+    "alpha_pct":       IBKR_SETTINGS.alpha_pct,   # ≥ -5%  (permisivo: que no sea catastrófico)
+    "n_trades":        IBKR_SETTINGS.n_trades,      # ≥ 8 trades para tener muestra estadística
 }
 
 # ── Espacio de búsqueda de hiperparámetros ───────────────
 # Cada intento samplea aleatoriamente de estos rangos.
 # Cuanta más variedad, más probabilidad de encontrar buenas configs.
 SEARCH_SPACE = {
-    "learning_rate":  [1e-4, 3e-4, 5e-4, 7e-4, 1e-3],
-    "n_steps":        [2048, 4096, 8192],
-    "batch_size":     [2048, 4096, 8192],
-    "gamma":          [0.95, 0.97, 0.99, 0.995],
-    "gae_lambda":     [0.90, 0.92, 0.95, 0.98],
-    "ent_coef":       [0.001, 0.005, 0.01, 0.02, 0.05],
-    "clip_range":     [0.1, 0.15, 0.2, 0.25, 0.3],
-    "net_arch_key":   ["small", "medium", "large", "deep"],
-    "n_envs":         [2, 4, 6, 8],
+    "learning_rate":  IBKR_SETTINGS.learning_rate,
+    "n_steps":        IBKR_SETTINGS.n_steps,
+    "batch_size":     IBKR_SETTINGS.batch_size,
+    "gamma":          IBKR_SETTINGS.gamma,
+    "gae_lambda":     IBKR_SETTINGS.gae_lambda,
+    "ent_coef":       IBKR_SETTINGS.ent_coef,
+    "clip_range":     IBKR_SETTINGS.clip_range,
+    "net_arch_key":   IBKR_SETTINGS.net_arch_key,
+    "n_envs":         IBKR_SETTINGS.n_envs,
 }
 
 NET_ARCHS = {
-    "small":  [64, 64],
-    "medium": [128, 128],
-    "large":  [256, 256],
-    "deep":   [128, 128, 64],
+    "small":  IBKR_SETTINGS.small,
+    "medium": IBKR_SETTINGS.medium,
+    "large":  IBKR_SETTINGS.large,
+    "deep":   IBKR_SETTINGS.deep,
 }
 
 # ══════════════════════════════════════════════════════════════════════════════
 # Código del factory (no modificar salvo que sepas lo que haces)
 # ══════════════════════════════════════════════════════════════════════════════
 
-import json
-import random
-import shutil
-import sys
-import time
-import traceback
-from datetime import datetime
-from pathlib import Path
-import pandas as pd
-from Data.historical.Datadownloader import DataManager
-from src.brain.ModelTrainer import ModelTrainer, PPOConfig, detect_device
-from tests.backtest.Backtestengine import BacktestEngine
-from tests.backtest.Backtestmetrics import BacktestMetrics
-
-
 # Directorios de salida
-APPROVED_DIR  = Path(f"IA/models/{SYMBOL}/approved")
-FACTORY_LOG   = Path(f"IA/models/{SYMBOL}/factory_report.json")
+APPROVED_DIR  = Path(f"{IBKR_SETTINGS.MODELS_DIR}/{IBKR_SETTINGS.SYMBOL}/approved")
+FACTORY_LOG   = Path(f"{IBKR_SETTINGS.MODELS_DIR}/{IBKR_SETTINGS.SYMBOL}/factory_report.json")
 APPROVED_DIR.mkdir(parents=True, exist_ok=True)
 
 
@@ -206,8 +181,8 @@ def save_approved_model(attempt: int, approved_count: int, metrics: dict, config
     dst    = APPROVED_DIR / label
     dst.mkdir(parents=True, exist_ok=True)
 
-    src_model = Path(f"IA/models/{SYMBOL}/best_model.zip")
-    src_norm  = Path(f"IA/models/{SYMBOL}/vec_normalize.pkl")
+    src_model = Path(f"{IBKR_SETTINGS.MODELS_DIR}/{IBKR_SETTINGS.SYMBOL}/best_model.zip")
+    src_norm  = Path(f"{IBKR_SETTINGS.MODELS_DIR}/{IBKR_SETTINGS.SYMBOL}/vec_normalize.pkl")
 
     if src_model.exists():
         shutil.copy2(src_model, dst / "best_model.zip")
@@ -219,9 +194,9 @@ def save_approved_model(attempt: int, approved_count: int, metrics: dict, config
         "approved_id":  approved_count,
         "attempt":      attempt,
         "saved_at":     datetime.now().isoformat(),
-        "symbol":       SYMBOL,
-        "interval":     INTERVAL,
-        "timesteps":    TIMESTEPS_PER_MODEL,
+        "symbol":       IBKR_SETTINGS.SYMBOL,
+        "interval":     IBKR_SETTINGS.INTERVAL,
+        "timesteps":    IBKR_SETTINGS.TIMESTEPS,
         "config":       config_meta,
         "metrics": {
             k: round(v, 4) if isinstance(v, float) else v
@@ -248,7 +223,7 @@ def print_attempt_result(attempt: int, approved: int, elapsed: float,
     print(f"\n{'─'*60}")
     print(
         f"  Intento {attempt:>3}  |  {status}  |  "
-        f"Aprobados: {approved}/{TARGET_APPROVED}  |  "
+        f"Aprobados: {approved}/{IBKR_SETTINGS.TARGET_APPROVED}  |  "
         f"{elapsed/60:.1f} min"
     )
     print(
@@ -305,7 +280,7 @@ def generate_html_report(all_results: list[dict], approved_count: int):
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Model Factory — {SYMBOL}</title>
+<title>Model Factory — {IBKR_SETTINGS.SYMBOL}</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
@@ -333,7 +308,7 @@ def generate_html_report(all_results: list[dict], approved_count: int):
 </style>
 </head>
 <body>
-<h1>Model Factory — {SYMBOL}</h1>
+<h1>Model Factory — {IBKR_SETTINGS.SYMBOL}</h1>
 <h2>Generado: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  |  
     {len(all_results)} intentos  |  {approved_count} modelos aptos</h2>
 
@@ -425,7 +400,7 @@ new Chart(document.getElementById('wrChart'), {{
 </script>
 </body></html>"""
 
-    report_path = Path(f"IA/models/{SYMBOL}/factory_report.html")
+    report_path = Path(f"{IBKR_SETTINGS.MODELS_DIR}/{IBKR_SETTINGS.SYMBOL}/factory_report.html")
     report_path.write_text(html, encoding="utf-8")
     print(f"\n[Factory] Reporte HTML → {report_path}")
     return report_path
@@ -436,8 +411,8 @@ new Chart(document.getElementById('wrChart'), {{
 
 def run_factory():
     print(f"\n{'═'*65}")
-    print(f"  MODEL FACTORY  |  {SYMBOL}  |  Objetivo: {TARGET_APPROVED} modelos aptos")
-    print(f"  Max intentos: {MAX_ATTEMPTS}  |  Timesteps/modelo: {TIMESTEPS_PER_MODEL:,}")
+    print(f"  MODEL FACTORY  |  {IBKR_SETTINGS.SYMBOL}  |  Objetivo: {IBKR_SETTINGS.TARGET_APPROVED} modelos aptos")
+    print(f"  Max intentos: {IBKR_SETTINGS.MAX_ATTEMPTS}  |  Timesteps/modelo: {IBKR_SETTINGS.TIMESTEPS:,}")
     print(f"{'═'*65}\n")
 
     device = detect_device()
@@ -445,23 +420,23 @@ def run_factory():
     # ── 1. Cargar datos ───────────────────────────────────────────────────────
     dm = DataManager()
     try:
-        df_raw = dm.load(SYMBOL, INTERVAL)
+        df_raw = dm.load(IBKR_SETTINGS.SYMBOL, IBKR_SETTINGS.INTERVAL)
         print(f"[Factory] Datos cargados desde disco: {len(df_raw):,} filas")
     except FileNotFoundError:
-        print(f"[Factory] Descargando {SYMBOL} desde {SOURCE}...")
-        df_raw = dm.download(SYMBOL, INTERVAL, START_TRAIN, source=SOURCE)
+        print(f"[Factory] Descargando {IBKR_SETTINGS.SYMBOL} desde {IBKR_SETTINGS.SOURCE}...")
+        df_raw = dm.download(IBKR_SETTINGS.SYMBOL, IBKR_SETTINGS.INTERVAL, IBKR_SETTINGS.START, source=IBKR_SETTINGS.SOURCE)
 
     # Normalizar timezone
     if df_raw.index.tz is None:
         df_raw.index = df_raw.index.tz_localize("UTC")
 
     # Split entrenamiento / test (sin overlap — el test nunca toca el entrenamiento)
-    start_test_ts = pd.Timestamp(START_TEST, tz="UTC")
+    start_test_ts = pd.Timestamp(IBKR_SETTINGS.START_TEST, tz="UTC")
     df_train_raw  = df_raw[df_raw.index < start_test_ts].copy()
     df_test_raw   = df_raw[df_raw.index >= start_test_ts].copy()
 
-    if END_TEST:
-        df_test_raw = df_test_raw[df_test_raw.index <= pd.Timestamp(END_TEST, tz="UTC")]
+    if IBKR_SETTINGS.END_TEST:
+        df_test_raw = df_test_raw[df_test_raw.index <= pd.Timestamp(IBKR_SETTINGS.END_TEST, tz="UTC")]
 
     print(f"[Factory] Train: {len(df_train_raw):,} filas  |  Test: {len(df_test_raw):,} filas")
 
@@ -480,15 +455,15 @@ def run_factory():
     all_results    = []
     factory_start  = time.time()
 
-    for attempt in range(1, MAX_ATTEMPTS + 1):
-        if STOP_ON_TARGET and approved_count >= TARGET_APPROVED:
+    for attempt in range(1, IBKR_SETTINGS.MAX_ATTEMPTS + 1):
+        if IBKR_SETTINGS.STOP_ON_TARGET and approved_count >= IBKR_SETTINGS.TARGET_APPROVED:
             print(f"\n[Factory] 🎯 Objetivo alcanzado: {approved_count} modelos aptos")
             break
 
         print(f"\n{'═'*65}")
         print(
-            f"  INTENTO {attempt}/{MAX_ATTEMPTS}  |  "
-            f"Aprobados: {approved_count}/{TARGET_APPROVED}  |  "
+            f"  INTENTO {attempt}/{IBKR_SETTINGS.MAX_ATTEMPTS}  |  "
+            f"Aprobados: {approved_count}/{IBKR_SETTINGS.TARGET_APPROVED}  |  "
             f"Tiempo total: {(time.time()-factory_start)/60:.0f} min"
         )
         print(f"{'═'*65}")
@@ -512,24 +487,24 @@ def run_factory():
         try:
             # ── Entrenamiento ─────────────────────────────────────────────────
             trainer = ModelTrainer(
-                symbol  = SYMBOL,
+                symbol  = IBKR_SETTINGS.SYMBOL,
                 config  = cfg,
                 device  = device,
                 n_envs  = n_envs,
             )
             trainer.train(
                 df              = df_train_raw,
-                total_timesteps = TIMESTEPS_PER_MODEL,
+                total_timesteps = IBKR_SETTINGS.TIMESTEPS,
                 eval_split      = 0.15,   # 15% del train para eval interna
             )
 
             # ── Backtest sobre datos de test (nunca vistos) ───────────────────
             engine  = BacktestEngine(
-                symbol          = SYMBOL,
-                initial_balance = INITIAL_BALANCE,
-                commission      = COMMISSION,
+                symbol          = IBKR_SETTINGS.SYMBOL,
+                initial_balance = IBKR_SETTINGS.INITIAL_CASH,
+                commission      = IBKR_SETTINGS.COMMISSION,
             )
-            result  = engine.run(df_test_raw, interval=INTERVAL)
+            result  = engine.run(df_test_raw, interval=IBKR_SETTINGS.INTERVAL)
             metrics = BacktestMetrics(result).compute()
 
             # ── Evaluar aprobación ────────────────────────────────────────────
@@ -567,8 +542,8 @@ def run_factory():
         FACTORY_LOG.parent.mkdir(parents=True, exist_ok=True)
         with open(FACTORY_LOG, "w") as f:
             json.dump({
-                "symbol":          SYMBOL,
-                "target":          TARGET_APPROVED,
+                "symbol":          IBKR_SETTINGS.SYMBOL,
+                "target":          IBKR_SETTINGS.TARGET_APPROVED,
                 "approved":        approved_count,
                 "attempts":        len(all_results),
                 "approval_config": APPROVAL,
@@ -580,7 +555,7 @@ def run_factory():
     approved_list = [r for r in all_results if r["passed"]]
 
     print(f"\n{'═'*65}")
-    print(f"  FACTORY COMPLETADO  —  {SYMBOL}")
+    print(f"  FACTORY COMPLETADO  —  {IBKR_SETTINGS.SYMBOL}")
     print(f"{'═'*65}")
     print(f"  Intentos realizados : {len(all_results)}")
     print(f"  Modelos aprobados   : {approved_count}")

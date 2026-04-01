@@ -1,6 +1,5 @@
 import pandas as pd
 
-
 class SMAStrategy:
     """
     Estrategia de entrada basada en cruce de SMA con Higher Highs / Higher Lows.

@@ -17,12 +17,9 @@ from typing import Optional
 import numpy as np
 import pandas as pd
 import torch
+from config import settings as IBKR_SETTINGS
 
-# ── OPTIMIZACIÓN CRÍTICA PARA CPU/GPU ─────────────────────────────────────────
-# Evita que la CPU pelee consigo misma intentando usar todos los hilos
-# en cada entorno. Mantiene la CPU libre para alimentar a la GPU.
-torch.set_num_threads(3)
-# ──────────────────────────────────────────────────────────────────────────────
+torch.set_num_threads(IBKR_SETTINGS.SET_THREAD_NUMBER)
 
 from stable_baselines3 import PPO
 from stable_baselines3.common.callbacks import (
@@ -38,9 +35,6 @@ from stable_baselines3.common.vec_env import (
 )
 from src.brain.TradingEnvironment import TradingEnvironment
 from src.brain.FeatureEngineering import FeatureEngineer
-
-MODELS_DIR = Path(f"C:\\Users\\artur\\Programming\\PycharmProjects\\python_autotrader\\IA\\models")
-LOGS_DIR   = Path("C:\\Users\\artur\\Programming\\PycharmProjects\\python_autotrader\\IA\\logs")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -265,8 +259,8 @@ class ModelTrainer:
         self.model:   Optional[PPO]          = None
         self.vec_env: Optional[VecNormalize] = None
 
-        (MODELS_DIR / self.symbol / "checkpoints").mkdir(parents=True, exist_ok=True)
-        LOGS_DIR.mkdir(parents=True, exist_ok=True)
+        (IBKR_SETTINGS.MODELS_DIR / self.symbol / "checkpoints").mkdir(parents=True, exist_ok=True)
+        IBKR_SETTINGS.LOGS_DIR.mkdir(parents=True, exist_ok=True)
 
     # ══════════════════════════════════════════════════════════════════════════
     # Entrenamiento
@@ -344,8 +338,8 @@ class ModelTrainer:
         eval_cb       = EvalCallback(
             eval_env,
             callback_after_eval  = early_stop_cb,
-            best_model_save_path = str(MODELS_DIR / self.symbol),
-            log_path             = str(LOGS_DIR / self.symbol),
+            best_model_save_path = str(IBKR_SETTINGS.MODELS_DIR / self.symbol),
+            log_path             = str(IBKR_SETTINGS.LOGS_DIR / self.symbol),
             eval_freq            = max(eval_freq // self.n_envs, 1),
             n_eval_episodes      = n_eval_episodes,
             deterministic        = True,
@@ -353,7 +347,7 @@ class ModelTrainer:
         )
         ckpt_cb = CheckpointCallback(
             save_freq   = max(total_timesteps // 10, 50_000) // self.n_envs,
-            save_path   = str(MODELS_DIR / self.symbol / "checkpoints"),
+            save_path   = str(IBKR_SETTINGS.MODELS_DIR / self.symbol / "checkpoints"),
             name_prefix = f"ppo_{self.symbol.lower()}",
             save_vecnormalize = True,
             verbose           = 0,
@@ -375,7 +369,7 @@ class ModelTrainer:
                 self.model = PPO.load(
                     ckpt, env=self.vec_env,
                     device=self.device, verbose=1,
-                    tensorboard_log=str(LOGS_DIR),
+                    tensorboard_log=str(IBKR_SETTINGS.LOGS_DIR),
                 )
             else:
                 resume = False
@@ -394,7 +388,7 @@ class ModelTrainer:
                 ent_coef        = self.config.ent_coef,
                 vf_coef         = self.config.vf_coef,
                 max_grad_norm   = self.config.max_grad_norm,
-                tensorboard_log = str(LOGS_DIR),
+                tensorboard_log = str(IBKR_SETTINGS.LOGS_DIR),
                 policy_kwargs   = policy_kwargs or None,
                 device          = self.device,
                 verbose         = 1,
@@ -465,7 +459,7 @@ class ModelTrainer:
         }
         if verbose:
             self._print_metrics(metrics)
-        with open(MODELS_DIR / self.symbol / "metrics.json", "w") as f:
+        with open(IBKR_SETTINGS.MODELS_DIR / self.symbol / "metrics.json", "w") as f:
             json.dump(metrics, f, indent=2)
         return metrics
 
@@ -531,7 +525,7 @@ class ModelTrainer:
             ent_coef      = best["ent"],
             clip_range    = best["clip"],
         )
-        with open(MODELS_DIR / self.symbol / "optuna_best.json", "w") as f:
+        with open(IBKR_SETTINGS.MODELS_DIR / self.symbol / "optuna_best.json", "w") as f:
             json.dump({"params": best, "sharpe": study.best_value}, f, indent=2)
 
         self.config         = best_cfg
@@ -542,8 +536,8 @@ class ModelTrainer:
         self._save_model()
 
     def load_model(self, path: Optional[str] = None) -> "ModelTrainer":
-        model_path = path or str(MODELS_DIR / self.symbol / "best_model")
-        norm_path  = str(MODELS_DIR / self.symbol / "vec_normalize.pkl")
+        model_path = path or str(IBKR_SETTINGS.MODELS_DIR / self.symbol / "best_model")
+        norm_path  = str(IBKR_SETTINGS.MODELS_DIR / self.symbol / "vec_normalize.pkl")
         if not Path(model_path + ".zip").exists():
             raise FileNotFoundError(f"Modelo no encontrado: {model_path}.zip")
         self.model = PPO.load(model_path, device=self.device, verbose=1)
@@ -555,10 +549,10 @@ class ModelTrainer:
         return self
 
     def _save_model(self):
-        path = MODELS_DIR / self.symbol / "best_model"
+        path = IBKR_SETTINGS.MODELS_DIR / self.symbol / "best_model"
         self.model.save(str(path))
         if self.vec_env is not None:
-            self.vec_env.save(str(MODELS_DIR / self.symbol / "vec_normalize.pkl"))
+            self.vec_env.save(str(IBKR_SETTINGS.MODELS_DIR / self.symbol / "vec_normalize.pkl"))
         print(f"[Trainer] Guardado → {path}.zip")
 
     def _save_training_meta(self, total_timesteps: int, elapsed: float):
@@ -572,11 +566,11 @@ class ModelTrainer:
             "n_envs":          self.n_envs,
             "config":          self.config.to_dict(),
         }
-        with open(MODELS_DIR / self.symbol / "training_meta.json", "w") as f:
+        with open(IBKR_SETTINGS.MODELS_DIR / self.symbol / "training_meta.json", "w") as f:
             json.dump(meta, f, indent=2, default=str)
 
     def _find_latest_checkpoint(self) -> Optional[str]:
-        ckpt_dir = MODELS_DIR / self.symbol / "checkpoints"
+        ckpt_dir = IBKR_SETTINGS.MODELS_DIR / self.symbol / "checkpoints"
         zips     = sorted(ckpt_dir.glob("*.zip"), key=lambda p: p.stat().st_mtime)
         return str(zips[-1]).replace(".zip", "") if zips else None
 
