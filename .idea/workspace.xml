@@ -6,23 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="96faf10a-d2b9-4e2a-b874-9fe6a8b78abb" name="Changes" comment=".">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Train_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data/Train_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/historical/Datadownloader.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data/historical/Datadownloader.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/historical/Datapipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data/historical/Datapipeline.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/historical/download_historical_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data/historical/download_historical_data.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/providers/RealTime_Market_Data.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data/providers/RealTime_Market_Data.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/Strategy.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/Strategy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/brain/ModelTrainer.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/brain/ModelTrainer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/brain/Model_factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/brain/Model_factory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/brain/TradingAI.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/brain/TradingAI.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/knowledge/KnowledgeIngestor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/knowledge/KnowledgeIngestor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/knowledge/VectorStore.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/knowledge/VectorStore.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/Back_Test.py" beforeDir="false" afterPath="$PROJECT_DIR$/Check_Tests/Back_Test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/backtest/Backtestengine.py" beforeDir="false" afterPath="$PROJECT_DIR$/Check_Tests/backtest/Backtestengine.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/backtest/Backtestmetrics.py" beforeDir="false" afterPath="$PROJECT_DIR$/Check_Tests/backtest/Backtestmetrics.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/backtest/Backtestreport.py" beforeDir="false" afterPath="$PROJECT_DIR$/Check_Tests/backtest/Backtestreport.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/gpu_check.py" beforeDir="false" afterPath="$PROJECT_DIR$/Check_Tests/gpu_check.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readme" beforeDir="false" afterPath="$PROJECT_DIR$/readme" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -130,7 +114,7 @@
       <workItem from="1774973848866" duration="555000" />
       <workItem from="1774982661494" duration="1541000" />
       <workItem from="1774984229313" duration="3879000" />
-      <workItem from="1775016308987" duration="660000" />
+      <workItem from="1775016308987" duration="1667000" />
     </task>
     <task id="LOCAL-00001" summary="ibkr bot, falta que probarlo, tengo que tener una suscripciones de 5 usd para tener datos en tiempo real">
       <option name="closed" value="true" />
@@ -252,7 +236,23 @@
       <option name="project" value="LOCAL" />
       <updated>1774937936669</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="FEATURE - todas las configuraciones del bot">
+      <option name="closed" value="true" />
+      <created>1775017366991</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1775017366991</updated>
+    </task>
+    <task id="LOCAL-00017" summary=".">
+      <option name="closed" value="true" />
+      <created>1775017381448</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1775017381448</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -266,6 +266,7 @@
     <MESSAGE value="FIX/FEATURES - Arreglos en codigo" />
     <MESSAGE value="orden archivo" />
     <MESSAGE value="todas las variables de ajustes de los archivos" />
+    <MESSAGE value="FEATURE - todas las configuraciones del bot" />
     <MESSAGE value="." />
     <option name="LAST_COMMIT_MESSAGE" value="." />
   </component>
