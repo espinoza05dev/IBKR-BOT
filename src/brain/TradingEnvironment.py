@@ -25,6 +25,15 @@ class TradingEnvironment(gym.Env):
         self.render_mode = render_mode
         self.n_features = 18
 
+        # ── NUEVO: Manejo seguro para inicializaciones Dummy de SB3 ───
+        if df.empty:
+            # Generamos un DataFrame mínimo con suficientes filas para que
+            # no dé error al hacer slice con el tamaño del 'window'
+            df = pd.DataFrame({
+                "close": np.random.uniform(100, 110, size=window + 5)
+            })
+        # ──────────────────────────────────────────────────────────────
+
         # ── OPTIMIZACIÓN CRÍTICA: Pre-procesamiento NumPy ─────────────
         # 1. Extraer los precios de cierre a un arreglo 1D super rápido
         self.close_prices = df["close"].values.astype(np.float32)
@@ -59,7 +68,6 @@ class TradingEnvironment(gym.Env):
         )
 
         self._reset_state()
-
     # ── Gym API ───────────────────────────────────────────────────────────────
 
     def reset(self, seed=None, options=None):

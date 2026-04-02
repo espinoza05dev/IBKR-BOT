@@ -5,10 +5,7 @@ Ejecutar UNA VEZ para verificar que todo está configurado correctamente.
 
     python IA_BackTests/gpu_check.py
 """
-
 import sys
-
-
 def check_python():
     v = sys.version_info
     ok = v.major == 3 and v.minor >= 9
