@@ -7,8 +7,8 @@ from config import settings as IBKR_SETTINGS
 
 def main():
     print("\n╔══════════════════════════════════════╗")
-    print("║   OHLCV Data Downloader — AutoTrader  ║")
-    print("╚══════════════════════════════════════╝\n")
+    print("  ║   OHLCV Data Downloader — AutoTrader ║")
+    print("  ╚══════════════════════════════════════╝\n")
 
     # ── Opción A: Pipeline completo (recomendado para entrenar) ───────────────
     pipeline = DataPipeline(source=IBKR_SETTINGS.SOURCE)

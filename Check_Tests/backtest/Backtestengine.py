@@ -26,8 +26,7 @@ from stable_baselines3.common.vec_env import VecNormalize, DummyVecEnv
 
 from src.brain.TradingEnvironment import TradingEnvironment
 from src.brain.FeatureEngineering import FeatureEngineer
-
-MODELS_DIR = Path("C:\\Users\\artur\\Programming\\PycharmProjects\\python_autotrader\\IA\\models")
+from config import settings as IBKR_SETTINGS
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -118,8 +117,8 @@ class BacktestEngine:
 
     def load_model(self, model_path: Optional[str] = None) -> "BacktestEngine":
         """Carga el modelo y el normalizador desde disco."""
-        mp = model_path or str(MODELS_DIR / self.symbol / "best_model")
-        np_ = str(MODELS_DIR / self.symbol / "vec_normalize.pkl")
+        mp = model_path or str(IBKR_SETTINGS.MODELS_DIR / self.symbol / "best_model")
+        np_ = str(IBKR_SETTINGS.MODELS_DIR / self.symbol / "vec_normalize.pkl")
 
         if not Path(mp + ".zip").exists():
             raise FileNotFoundError(
@@ -477,7 +476,7 @@ class WalkForwardEngine:
 
     def aggregate_metrics(self, results: list[BacktestResult]) -> dict:
         """Agrega métricas de todas las ventanas en un resumen estadístico."""
-        from tests.backtest.Backtestmetrics import BacktestMetrics
+        from Check_Tests.backtest.Backtestmetrics import BacktestMetrics
 
         all_metrics = [BacktestMetrics(r).compute() for r in results]
 
@@ -496,7 +495,7 @@ class WalkForwardEngine:
         return {k: agg(k) for k in keys}
 
     def _print_aggregate(self, results: list[BacktestResult]):
-        from tests.backtest.Backtestmetrics import BacktestMetrics
+        from Check_Tests.backtest.Backtestmetrics import BacktestMetrics
 
         print(f"\n{'═'*55}")
         print(f"  Walk-Forward — {len(results)} ventanas completadas")

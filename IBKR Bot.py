@@ -1,7 +1,5 @@
 from __future__ import annotations
-
 from src.risk.RiskManager import RiskConfig
-
 """
 IBKR Bot.py - Punto de entrada del autotrader.
 Orquesta la conexion, datos de mercado, estrategia y portfolio.
@@ -118,7 +116,7 @@ class AITradingBot:
         print(f"[Bot] Cargando modelo IA_BackTests para {IBKR_SETTINGS.SYMBOL}...")
         self.ai = TradingAI(
             symbol               = IBKR_SETTINGS.SYMBOL,
-            risk_config          = IBKR_SETTINGS.RISK,
+            risk_config          = RISK,
             confidence_threshold = IBKR_SETTINGS.CONFIDENCE_THRESHOLD,
         )
         self.ai.load()

@@ -82,11 +82,11 @@ APPROVED_DIR  = Path(f"{IBKR_SETTINGS.MODELS_DIR}/{IBKR_SETTINGS.SYMBOL}/approve
 FACTORY_LOG   = Path(f"{IBKR_SETTINGS.MODELS_DIR}/{IBKR_SETTINGS.SYMBOL}/factory_report.json")
 APPROVED_DIR.mkdir(parents=True, exist_ok=True)
 
-
-# ══════════════════════════════════════════════════════════════════════════════
-# Utilidades
-# ══════════════════════════════════════════════════════════════════════════════
-
+"""
+══════════════════════════════════════════════════════════════════════════════
+                                Utilidades
+══════════════════════════════════════════════════════════════════════════════
+"""
 def sample_config(attempt: int) -> tuple[PPOConfig, int, dict]:
     """
     Samplea una configuración PPO única para este intento.
@@ -405,10 +405,11 @@ new Chart(document.getElementById('wrChart'), {{
     print(f"\n[Factory] Reporte HTML → {report_path}")
     return report_path
 
-# ══════════════════════════════════════════════════════════════════════════════
-# Pipeline principal
-# ══════════════════════════════════════════════════════════════════════════════
-
+"""
+══════════════════════════════════════════════════════════════════════════════
+                                Pipeline principal
+══════════════════════════════════════════════════════════════════════════════
+"""
 def run_factory():
     print(f"\n{'═'*65}")
     print(f"  MODEL FACTORY  |  {IBKR_SETTINGS.SYMBOL}  |  Objetivo: {IBKR_SETTINGS.TARGET_APPROVED} modelos aptos")

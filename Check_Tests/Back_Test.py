@@ -1,77 +1,42 @@
 """
 backtest.py
-Script de backtesting y evaluación completa del modelo.
+Script de backtesting y evaluación completa del BACKTEST_MODElo.
 
-Modos:
-    single      → Un backtest sobre el período de test
-    walkforward → Validación walk-forward en N ventanas
-    compare     → Backtestea múltiples símbolos y compara
-
-Ejecución:
-    python backtest.py
 """
 
 import sys
 import pandas as pd
 from Data.historical.Datadownloader import DataManager
 from Data.historical.Datapipeline import DataPipeline
-from tests.backtest.Backtestengine import BacktestEngine, WalkForwardEngine
-from tests.backtest.Backtestmetrics import BacktestMetrics
-from tests.backtest.Backtestreport import BacktestReport
-
-
-# ╔════════════════════════════════════════════════════════╗
-# ║           CONFIGURACIÓN — edita solo aquí              ║
-# ╚════════════════════════════════════════════════════════╝
-
-SYMBOL          = "AAL"       # Símbolo del modelo a evaluar
-INTERVAL        = "1h"
-SOURCE          = "yfinance"
-START_TRAIN     = "2013-01-01"  # Inicio del dataset completo
-START_TEST      = "2024-01-01"  # Los datos de TEST deben ser POSTERIORES al entrenamiento
-END_TEST        = None          # None = hasta hoy
-
-INITIAL_BALANCE = 10000.0
-COMMISSION      = 0.001        # 0.1% por operación
-
-MODE = "walkforward"   # "single" | "walkforward" | "compare"
-
-# Walk-forward (solo Modo walkforward)
-WF_N_WINDOWS          = 4
-WF_TIMESTEPS_WINDOW   = 10_000_000   # Steps por ventana (más rápido que entrenamiento completo)
-
-# Multi-símbolo (solo Modo compare)
-COMPARE_SYMBOLS = ["AAPL", "MSFT", "NVDA",""]
-
-OPEN_REPORT_IN_BROWSER = True   # Abrir HTML al terminar
-
-
-# ═════════════════════════════════════════════════════════════════════════════
+from Check_Tests.backtest.Backtestengine import BacktestEngine, WalkForwardEngine
+from Check_Tests.backtest.Backtestmetrics import BacktestMetrics
+from Check_Tests.backtest.Backtestreport import BacktestReport
+from config import settings as IBKR_SETTINGS
 
 
 def modo_single():
     """
     Backtest sobre datos de test (posteriores al entrenamiento).
-    Es la validación más importante: el modelo nunca vio estos datos.
+    Es la validación más importante: el BACKTEST_MODElo nunca vio estos datos.
     """
     print("\n▶  Modo: Backtest único")
 
     # Cargar datos de test (posteriores al entrenamiento)
     dm = DataManager()
     try:
-        df_raw = dm.load(SYMBOL, INTERVAL)
+        df_raw = dm.load(IBKR_SETTINGS.SYMBOL, IBKR_SETTINGS.INTERVAL)
     except FileNotFoundError:
-        print(f"[Main] Descargando {SYMBOL}...")
-        df_raw = dm.download(SYMBOL, INTERVAL, START_TRAIN, source=SOURCE)
+        print(f"[Main] Descargando {IBKR_SETTINGS.SYMBOL}...")
+        df_raw = dm.download(IBKR_SETTINGS.SYMBOL, IBKR_SETTINGS.INTERVAL, IBKR_SETTINGS.START_TRAIN, source=IBKR_SETTINGS.SOURCE)
 
     # Filtrar solo el período de test
     if hasattr(df_raw.index, "tz") and df_raw.index.tz is None:
         df_raw.index = df_raw.index.tz_localize("UTC")
 
-    start_ts = pd.Timestamp(START_TEST, tz="UTC")
+    start_ts = pd.Timestamp(IBKR_SETTINGS.START_TEST, tz="UTC")
     df_test  = df_raw[df_raw.index >= start_ts]
-    if END_TEST:
-        df_test = df_test[df_test.index <= pd.Timestamp(END_TEST, tz="UTC")]
+    if IBKR_SETTINGS.END_TEST:
+        df_test = df_test[df_test.index <= pd.Timestamp(IBKR_SETTINGS.END_TEST, tz="UTC")]
 
     if len(df_test) < 100:
         print(f"[Main] Solo {len(df_test)} barras en el período de test. "
@@ -83,11 +48,11 @@ def modo_single():
 
     # Ejecutar backtest
     engine = BacktestEngine(
-        symbol          = SYMBOL,
-        initial_balance = INITIAL_BALANCE,
-        commission      = COMMISSION,
+        symbol          = IBKR_SETTINGS.SYMBOL,
+        initial_balance = IBKR_SETTINGS.INITIAL_CASH,
+        commission      = IBKR_SETTINGS.COMMISSION,
     )
-    result = engine.run(df_test, interval=INTERVAL)
+    result = engine.run(df_test, interval=IBKR_SETTINGS.INTERVAL)
 
     # Métricas completas
     metrics = BacktestMetrics(result).compute()
@@ -95,7 +60,7 @@ def modo_single():
 
     # Reporte HTML
     report = BacktestReport(result, metrics)
-    if OPEN_REPORT_IN_BROWSER:
+    if IBKR_SETTINGS.OPEN_REPORT_IN_BROWSER:
         report.show()
     else:
         path = report.save()
@@ -106,26 +71,26 @@ def modo_single():
 
 def modo_walkforward():
     """
-    Validación walk-forward: la forma más rigurosa de validar un modelo.
+    Validación walk-forward: la forma más rigurosa de validar un BACKTEST_MODElo.
     Entrena en ventanas deslizantes y prueba siempre en datos no vistos.
     Elimina completamente el sesgo de look-ahead.
     """
     print("\n▶  Modo: Walk-Forward Validation")
-    print(f"   Ventanas: {WF_N_WINDOWS}  |  Steps/ventana: {WF_TIMESTEPS_WINDOW:,}")
+    print(f"   Ventanas: {IBKR_SETTINGS.WF_N_WINDOWS}  |  Steps/ventana: {IBKR_SETTINGS.WF_TIMESTEPS_WINDOW:,}")
 
     # Dataset completo
-    pipeline          = DataPipeline(source=SOURCE)
-    train_df, test_df = pipeline.run(SYMBOL, INTERVAL, START_TRAIN)
+    pipeline          = DataPipeline(source=IBKR_SETTINGS.SOURCE)
+    train_df, test_df = pipeline.run(IBKR_SETTINGS.SYMBOL, IBKR_SETTINGS.INTERVAL, IBKR_SETTINGS.START_TRAIN)
     df_full = pd.concat([train_df, test_df])
 
     # Walk-forward
     wf = WalkForwardEngine(
-        symbol    = SYMBOL,
-        n_windows = WF_N_WINDOWS,
+        symbol    = IBKR_SETTINGS.SYMBOL,
+        n_windows = IBKR_SETTINGS.WF_N_WINDOWS,
         train_pct = 0.70,
         test_pct  = 0.15,
     )
-    results = wf.run(df_full, timesteps_per_window=WF_TIMESTEPS_WINDOW, features_ready=True)
+    results = wf.run(df_full, timesteps_per_window=IBKR_SETTINGS.WF_TIMESTEPS_WINDOW, features_ready=True)
 
     # Métricas agregadas
     agg = wf.aggregate_metrics(results)
@@ -144,7 +109,7 @@ def modo_walkforward():
     if results:
         last_metrics = BacktestMetrics(results[-1]).compute()
         report = BacktestReport(results[-1], last_metrics)
-        if OPEN_REPORT_IN_BROWSER:
+        if IBKR_SETTINGS.OPEN_REPORT_IN_BROWSER:
             report.show()
         else:
             report.save()
@@ -155,28 +120,28 @@ def modo_walkforward():
 def modo_compare():
     """
     Backtest en múltiples símbolos y compara los resultados.
-    Útil para elegir en qué activos el modelo funciona mejor.
+    Útil para elegir en qué activos el BACKTEST_MODElo funciona mejor.
     """
-    print(f"\n▶  Modo: Comparación multi-símbolo  {COMPARE_SYMBOLS}")
+    print(f"\n▶  Modo: Comparación multi-símbolo  {IBKR_SETTINGS.COMPARE_SYMBOLS}")
 
     dm       = DataManager()
     summary  = []
 
-    for sym in COMPARE_SYMBOLS:
+    for sym in IBKR_SETTINGS.COMPARE_SYMBOLS:
         print(f"\n[Main] ── {sym} ──────────────────────────────")
         try:
-            df_raw = dm.load(sym, INTERVAL)
+            df_raw = dm.load(sym, IBKR_SETTINGS.INTERVAL)
         except FileNotFoundError:
-            df_raw = dm.download(sym, INTERVAL, START_TRAIN, source=SOURCE)
+            df_raw = dm.download(sym, IBKR_SETTINGS.INTERVAL, IBKR_SETTINGS.START_TRAIN, source=IBKR_SETTINGS.SOURCE)
 
         # Período de test
         if df_raw.index.tz is None:
             df_raw.index = df_raw.index.tz_localize("UTC")
-        df_test = df_raw[df_raw.index >= pd.Timestamp(START_TEST, tz="UTC")]
+        df_test = df_raw[df_raw.index >= pd.Timestamp(IBKR_SETTINGS.START_TEST, tz="UTC")]
 
         try:
-            engine  = BacktestEngine(sym, INITIAL_BALANCE, COMMISSION)
-            result  = engine.run(df_test, interval=INTERVAL, verbose=False)
+            engine  = BacktestEngine(sym, IBKR_SETTINGS.INITIAL_CASH, IBKR_SETTINGS.COMMISSION)
+            result  = engine.run(df_test, interval=IBKR_SETTINGS.INTERVAL, verbose=False)
             metrics = BacktestMetrics(result).compute()
             summary.append({
                 "symbol":      sym,
@@ -289,15 +254,15 @@ if __name__ == "__main__":
         "walkforward": modo_walkforward,
         "compare":     modo_compare,
     }
-    if MODE not in modos:
-        print(f"ERROR: MODE='{MODE}' no válido. Usa: {list(modos)}")
+    if IBKR_SETTINGS.BACKTEST_MODE not in modos:
+        print(f"ERROR: BACKTEST_MODE='{IBKR_SETTINGS.BACKTEST_MODE}' no válido. Usa: {list(modos)}")
         sys.exit(1)
 
     print("\n╔═══════════════════════════════════════════════╗")
     print("║       Backtester — AutoTrader IA_BackTests              ║")
     print("╚═══════════════════════════════════════════════╝")
-    print(f"  Símbolo : {SYMBOL}  |  Intervalo: {INTERVAL}")
-    print(f"  Test    : {START_TEST} → {END_TEST or 'hoy'}")
-    print(f"  Modo    : {MODE}\n")
+    print(f"  Símbolo : {IBKR_SETTINGS.SYMBOL}  |  Intervalo: {IBKR_SETTINGS.INTERVAL}")
+    print(f"  Test    : {IBKR_SETTINGS.START_TEST} → {IBKR_SETTINGS.END_TEST or 'hoy'}")
+    print(f"  Modo    : {IBKR_SETTINGS.BACKTEST_MODE}\n")
 
-    modos[MODE]()
+    modos[IBKR_SETTINGS.BACKTEST_MODE]()
